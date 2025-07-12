@@ -6,15 +6,31 @@ to the "Pure LLM-Cognition" model. Its sole responsibility is to manage the
 session, gather context, pass it to the Gemini service, and return the
 LLM's decision to the frontend.
 """
+import sys
+import os
 from flask import Flask, render_template, request, jsonify, session
 from datetime import datetime
-import os
 import json
-import question_bank
-import gemini_service
+
+# Add the project root to the sys.path to allow absolute imports from 'src'
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src import question_bank
+from src import gemini_service
 
 # Initialize the Flask application
-app = Flask(__name__)
+# Get the absolute path to the directory containing app.py (which is src)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Get the project root directory (one level up from src)
+project_root = os.path.abspath(os.path.join(current_dir, '..'))
+
+# Construct absolute paths for templates and static folders
+template_dir = os.path.join(project_root, 'templates')
+static_dir = os.path.join(project_root, 'static')
+
+print(f"Template directory: {template_dir}")
+print(f"Static directory: {static_dir}")
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 # A secret key is required for Flask session management
 app.secret_key = os.urandom(24) 
 
@@ -54,7 +70,8 @@ def chat():
 
     # 3. Load the full question bank
     try:
-        all_questions = question_bank.load_questions()
+        mcq_file_path = os.path.join(current_dir, 'mcq.json')
+        all_questions = question_bank.load_questions(file_path=mcq_file_path)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         return jsonify({"error": f"Could not load question bank: {e}"}), 500
 
