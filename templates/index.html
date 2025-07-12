@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Practice Coach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>AI Practice Coach</h2>
+            <p>Your personal tutor for exam prep</p>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <!-- Messages will be dynamically added here -->
+        </div>
+        <form class="chat-input-form" id="chat-input-form">
+            <input type="text" id="user-input" class="user-input" placeholder="Type your answer or ask a question...">
+            <button type="submit" class="send-btn" aria-label="Send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- HTML Templates for Messages -->
+    <template id="tutor-message-template">
+        <div class="chat-message tutor">
+            <div class="avatar">💡</div>
+            <div class="message-content"></div>
+        </div>
+    </template>
+
+    <template id="user-message-template">
+        <div class="chat-message user">
+            <div class="message-bubble"></div>
+        </div>
+    </template>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

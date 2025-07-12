@@ -1,0 +1,158 @@
+[
+  {
+    "id": 1,
+    "question": "Which of the following folk dances is performed by the fisherfolk of the Mithila region in Bihar?",
+    "options": {
+      "a": "Karma",
+      "b": "Nrityakali",
+      "c": "Kamala",
+      "d": "Jiya"
+    },
+    "correct_answer": "c",
+    "explanation": "Kamala is a folk dance of the Mithila region in Bihar performed by fisherfolk. Other folk dances of Bihar include Karma, Kajri, Jhumar, Jharni, Jat Jatin, Jhumeri, Sohar Khelwana, Natua, Nachini, Jhijiya, Dhamar jogira, and Krishi Nritya."
+  },
+  {
+    "id": 2,
+    "question": "Chad Laho is a dance-festival, primarily celebrated by which of the following tribes of Meghalaya?",
+    "options": {
+      "a": "Khasi",
+      "b": "Garo",
+      "c": "Jaintia",
+      "d": "Hojang"
+    },
+    "correct_answer": "c",
+    "explanation": "Chad Laho is a dance festival of the Jaintia tribe in Meghalaya, celebrated as a thanksgiving to God after the harvest season. Other folk dances of Meghalaya include Ka Shad Suk Mynsiem (Khasi), Beh-dien-khlam (Jaintia), and Wangala (Garo)."
+  },
+  {
+    "id": 3,
+    "question": "Which of the following dances of Goa is performed to celebrate the victory of the Maratha warriors over the Portuguese?",
+    "options": {
+      "a": "Ghodemodni",
+      "b": "Zemmado",
+      "c": "Morulem",
+      "d": "Goff"
+    },
+    "correct_answer": "a",
+    "explanation": "Ghodemodni (Horse dance) is a traditional event in Goa, celebrated in areas like Thane and Sattari, featuring warriors on decorated horses showcasing their martial arts skills to commemorate the victory over the Portuguese."
+  },
+  {
+    "id": 4,
+    "question": "Which of the following war dances is performed in Ngada festival and is performed by the tribes of Nagaland?",
+    "options": {
+      "a": "Jawara",
+      "b": "Dalkhai",
+      "c": "Rengma",
+      "d": "Garadi"
+    },
+    "correct_answer": "c",
+    "explanation": "The Rengma dance is a war dance performed by the Rengma tribe in Nagaland during the Ngada festival. Other popular dances of Nagaland include Modse and Aaluyattu."
+  },
+  {
+    "id": 5,
+    "question": "In which of the following classical dance forms are the actors' faces painted to symbolise the type of character they are playing?",
+    "options": {
+      "a": "Bharatanatyam",
+      "b": "Odissi",
+      "c": "Kathakali",
+      "d": "Kathak"
+    },
+    "correct_answer": "c",
+    "explanation": "In Kathakali, a classical dance from Kerala, actors' faces are elaborately painted to symbolize characters such as noble gods (Pacha), anti-heroes (Katti), and bearded roles (Thadi). This makeup is a key feature of the dance form."
+  },
+  {
+    "id": 6,
+    "question": "Which dance is embedded in the stories from the epics Mahabharata, Ramayana and Puranas?",
+    "options": {
+      "a": "Kathakali",
+      "b": "Kuchipudi",
+      "c": "Sattriya",
+      "d": "Odissi"
+    },
+    "correct_answer": "a",
+    "explanation": "Kathakali, which literally means 'story play', is a classical dance form from Kerala that enacts stories from Hindu epics like the Mahabharata, Ramayana, and Puranas through heavy makeup, intricate costumes, and dramatic expressions."
+  },
+  {
+    "id": 7,
+    "question": "Which of the following Indian tribal dances is prevalent in the Araku Valley near Visakhapatnam?",
+    "options": {
+      "a": "Dhimsa",
+      "b": "Bagurumba",
+      "c": "Jhumur",
+      "d": "Bardo Chham"
+    },
+    "correct_answer": "a",
+    "explanation": "Dhimsa is a tribal dance form from Andhra Pradesh, particularly prevalent in the Araku Valley near Visakhapatnam. It is performed by the local tribes."
+  },
+  {
+    "id": 8,
+    "question": "Which Indian classical dance form has composition in Meitei language?",
+    "options": {
+      "a": "Sattriya",
+      "b": "Chhau",
+      "c": "Manipuri",
+      "d": "Bharatanatyam"
+    },
+    "correct_answer": "c",
+    "explanation": "Manipuri, the classical dance of Manipur, uses Meitei language in its compositions. It combines Pre-Vaishnavite and Vaishnavite traditions and includes Sankirtana, Rasalila, and the Pung drum dance."
+  },
+  {
+    "id": 9,
+    "question": "Which of the following dances is performed in Goa during the festival Ganesh Chaturthi?",
+    "options": {
+      "a": "Tarangmel",
+      "b": "Dhalo",
+      "c": "Fugdi",
+      "d": "Dhangar"
+    },
+    "correct_answer": "c",
+    "explanation": "Fugdi is a folk dance performed by women in Goa during festivals like Ganesh Chaturthi. Other Goan folk dances include Tarangmel and Dhalo."
+  },
+  {
+    "id": 10,
+    "question": "Which of the following dance forms emotes a play through dancing in which the song is customarily in Manipravala language?",
+    "options": {
+      "a": "Kathak",
+      "b": "Mohiniattam",
+      "c": "Sattriya",
+      "d": "Kuchipudi"
+    },
+    "correct_answer": "b",
+    "explanation": "Mohiniattam is a classical dance from Kerala that features graceful movements to narrate Hindu mythological stories. The songs are traditionally in Manipravalam, a blend of Sanskrit and Malayalam."
+  },
+  {
+    "id": 11,
+    "question": "Mohiniyattam is associated with which of the following traditional dance styles?",
+    "options": {
+      "a": "Samapadam",
+      "b": "Tribhanga",
+      "c": "Chowk",
+      "d": "Lasya style"
+    },
+    "correct_answer": "d",
+    "explanation": "Mohiniyattam is a graceful classical dance from Kerala that focuses on expressions and storytelling in the Lasya style, which is characterized by soft, gentle movements."
+  },
+  {
+    "id": 12,
+    "question": "Khuallam is a famous dance of:",
+    "options": {
+      "a": "Bihar",
+      "b": "Andhra Pradesh",
+      "c": "Mizoram",
+      "d": "Uttar Pradesh"
+    },
+    "correct_answer": "c",
+    "explanation": "Khuallam (Dance of the Guests) is a famous dance from Mizoram, usually performed in the ceremony called 'Khuangchawi'. Other dances from Mizoram include Cheraw, Sarlamkai, and Chailam."
+  },
+  {
+    "id": 13,
+    "question": "Tera Tali folk dance is primarily associated with which of the following states?",
+    "options": {
+      "a": "Rajasthan",
+      "b": "Assam",
+      "c": "Madhya Pradesh",
+      "d": "Haryana"
+    },
+    "correct_answer": "a",
+    "explanation": "Terah Tali is a folk dance from Rajasthan, performed in praise of the folk god Ramdevji, primarily by the Kamar tribe. Other Rajasthani folk dances include Ghoomar, Kalbelia, and Kathputli."
+  }
+]
