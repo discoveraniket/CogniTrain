@@ -3,6 +3,7 @@ This module provides a wrapper for interacting with the Google Gemini API.
 It embodies the "Pure LLM-Cognition" model by using a single, comprehensive
 prompt to delegate all cognitive tasks to the LLM.
 """
+
 import os
 import json
 from typing import List, Dict, Any
@@ -14,13 +15,18 @@ try:
     if not api_key:
         raise ValueError("GEMINI_API_KEY environment variable not found.")
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-2.5-flash')
+    model = genai.GenerativeModel("gemini-2.5-flash")
     print("--- Gemini Service: Successfully configured and initialized. ---")
 except Exception as e:
     print(f"--- Gemini Service Error: {e} ---")
     model = None
 
-def get_llm_decision(chat_history: List[Dict[str, Any]], all_questions: List[Dict[str, Any]], current_question_index: int) -> Dict[str, Any]:
+
+def get_llm_decision(
+    chat_history: List[Dict[str, Any]],
+    all_questions: List[Dict[str, Any]],
+    current_question_index: int,
+) -> Dict[str, Any]:
     """
     Gets a comprehensive decision from the LLM for the next step in the conversation.
 
@@ -37,7 +43,9 @@ def get_llm_decision(chat_history: List[Dict[str, Any]], all_questions: List[Dic
         A dictionary representing the LLM's structured JSON decision.
     """
     if not model:
-        raise RuntimeError("Gemini model is not initialized. Check API key and configuration.")
+        raise RuntimeError(
+            "Gemini model is not initialized. Check API key and configuration."
+        )
 
     # The Master Prompt
     prompt = f"""
@@ -117,14 +125,14 @@ def get_llm_decision(chat_history: List[Dict[str, Any]], all_questions: List[Dic
         }}
         ```
     """
-    
+
     print("--- Gemini Service: Requesting decision from LLM with master prompt. ---")
     try:
         response = model.generate_content(
             prompt,
             generation_config=genai.types.GenerationConfig(
                 response_mime_type="application/json"
-            )
+            ),
         )
         return json.loads(response.text)
     except Exception as e:
@@ -132,5 +140,5 @@ def get_llm_decision(chat_history: List[Dict[str, Any]], all_questions: List[Dic
         # Return a structured error to be handled by the frontend
         return {
             "action": "ERROR",
-            "coach_response": f"Sorry, I encountered a problem trying to understand that. Please try again. (Details: {e})"
+            "coach_response": f"Sorry, I encountered a problem trying to understand that. Please try again. (Details: {e})",
         }

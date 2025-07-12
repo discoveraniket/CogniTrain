@@ -4,6 +4,7 @@ from typing import List, Dict, Any, Union
 # Define a type alias for a single question, which is a dictionary.
 Question = Dict[str, Union[str, int, List[str]]]
 
+
 def load_questions(file_path: str = "mcq.json") -> List[Question]:
     """Loads multiple-choice questions from a JSON file.
 
@@ -24,7 +25,7 @@ def load_questions(file_path: str = "mcq.json") -> List[Question]:
         json.JSONDecodeError: If the file content is not valid JSON.
     """
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             questions = json.load(f)
         # It's good practice to validate the structure of the loaded data,
         # but for this simple loader, we'll assume the format is correct.
@@ -36,7 +37,8 @@ def load_questions(file_path: str = "mcq.json") -> List[Question]:
         print(f"Error: The file at {file_path} is not a valid JSON file.")
         raise
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # This block demonstrates how to use the load_questions function
     # and verifies that the data is loaded correctly.
     print("Attempting to load questions from 'mcq.json'...")
@@ -54,4 +56,6 @@ if __name__ == '__main__':
         else:
             print("No questions were loaded. The file might be empty.")
     except (FileNotFoundError, json.JSONDecodeError) as e:
-        print(f"Failed to load questions. Please check the 'mcq.json' file. Details: {e}")
+        print(
+            f"Failed to load questions. Please check the 'mcq.json' file. Details: {e}"
+        )
