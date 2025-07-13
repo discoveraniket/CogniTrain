@@ -177,6 +177,19 @@ body {
     border: 1px solid #333;
 }
 
+.development-info-container.minimized {
+    max-height: 45px; 
+    transition: max-height 0.3s ease-out;
+}
+
+.development-info-container.minimized .dev-info-content {
+    display: none;
+}
+
+.development-info-container.minimized .dev-info-toggle::before {
+    content: '+';
+}
+
 .dev-info-header {
     background-color: #333;
     padding: 10px 15px;
@@ -195,6 +208,10 @@ body {
 .dev-info-toggle {
     font-size: 20px;
     font-weight: bold;
+}
+
+.dev-info-toggle::before {
+    content: '-';
 }
 
 .dev-info-content {

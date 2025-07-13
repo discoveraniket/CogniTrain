@@ -9,13 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- DEVELOPMENT_ONLY_START ---
     function setupDevInfoToggle() {
+        const devContainer = document.getElementById('development-info-container');
         const toggle = document.getElementById('dev-info-toggle');
-        const content = document.getElementById('dev-info-content');
-        if (toggle && content) {
+        if (devContainer && toggle) {
+            // Set initial state to minimized
+            devContainer.classList.add('minimized');
+            toggle.textContent = '+'; // Set initial toggle text
+
             toggle.addEventListener('click', () => {
-                const isVisible = content.style.display !== 'none';
-                content.style.display = isVisible ? 'none' : 'block';
-                toggle.textContent = isVisible ? '+' : '-';
+                const isMinimized = devContainer.classList.contains('minimized');
+                if (isMinimized) {
+                    devContainer.classList.remove('minimized');
+                    toggle.textContent = '-';
+                } else {
+                    devContainer.classList.add('minimized');
+                    toggle.textContent = '+';
+                }
             });
         }
     }
@@ -36,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
             studentModelEl.textContent = JSON.stringify(response.student_model_analysis, null, 2) || 'N/A';
             rawResponseEl.textContent = response._development_info;
 
-            devContainer.style.display = 'block';
+            // Ensure the container is visible, but its minimized state is controlled by the class
+            devContainer.style.display = 'block'; 
         }
     }
     // --- DEVELOPMENT_ONLY_END ---
