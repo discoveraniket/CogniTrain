@@ -7,6 +7,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Core Functions ---
 
+    // --- DEVELOPMENT_ONLY_START ---
+    function setupDevInfoToggle() {
+        const toggle = document.getElementById('dev-info-toggle');
+        const content = document.getElementById('dev-info-content');
+        if (toggle && content) {
+            toggle.addEventListener('click', () => {
+                const isVisible = content.style.display !== 'none';
+                content.style.display = isVisible ? 'none' : 'block';
+                toggle.textContent = isVisible ? '+' : '-';
+            });
+        }
+    }
+
+    function updateDevelopmentInfo(response) {
+        // This key is added by the backend for development purposes.
+        if (!response._development_info) {
+            return;
+        }
+
+        const devContainer = document.getElementById('development-info-container');
+        const rationaleEl = document.getElementById('dev-rationale');
+        const studentModelEl = document.getElementById('dev-student-model');
+        const rawResponseEl = document.getElementById('dev-raw-response');
+
+        if (devContainer && rationaleEl && studentModelEl && rawResponseEl) {
+            rationaleEl.textContent = response.question_selection_rationale || 'N/A';
+            studentModelEl.textContent = JSON.stringify(response.student_model_analysis, null, 2) || 'N/A';
+            rawResponseEl.textContent = response._development_info;
+
+            devContainer.style.display = 'block';
+        }
+    }
+    // --- DEVELOPMENT_ONLY_END ---
+
     function scrollToBottom() {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -96,6 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
             addMessage(response.coach_response || "Sorry, something went wrong.", 'tutor');
             setInputState(false);
         }
+        // --- DEVELOPMENT_ONLY_START ---
+        updateDevelopmentInfo(response);
+        // --- DEVELOPMENT_ONLY_END ---
     }
 
     async function sendMessage(messageText) {
@@ -148,4 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Start the conversation ---
     sendMessage('');
+    // --- DEVELOPMENT_ONLY_START ---
+    setupDevInfoToggle();
+    // --- DEVELOPMENT_ONLY_END ---
 });

@@ -1,158 +1,242 @@
 [
   {
     "id": 1,
-    "question": "Which of the following folk dances is performed by the fisherfolk of the Mithila region in Bihar?",
+    "question": "Who is considered the \"Father of the Computer\" for his conceptualization of the Analytical Engine?",
     "options": {
-      "a": "Karma",
-      "b": "Nrityakali",
-      "c": "Kamala",
-      "d": "Jiya"
+      "a": "Alan Turing",
+      "b": "Charles Babbage",
+      "c": "John von Neumann",
+      "d": "Herman Hollerith"
     },
-    "correct_answer": "c",
-    "explanation": "Kamala is a folk dance of the Mithila region in Bihar performed by fisherfolk. Other folk dances of Bihar include Karma, Kajri, Jhumar, Jharni, Jat Jatin, Jhumeri, Sohar Khelwana, Natua, Nachini, Jhijiya, Dhamar jogira, and Krishi Nritya."
+    "correct_answer": "b",
+    "explanation": "Charles Babbage conceptualized the Analytical Engine, a design for a mechanical general-purpose computer, earning him the title \"Father of the Computer.\""
   },
   {
     "id": 2,
-    "question": "Chad Laho is a dance-festival, primarily celebrated by which of the following tribes of Meghalaya?",
+    "question": "The ENIAC (Electronic Numerical Integrator and Computer) is often cited as the first large-scale, general-purpose electronic digital computer. In which decade was it completed?",
     "options": {
-      "a": "Khasi",
-      "b": "Garo",
-      "c": "Jaintia",
-      "d": "Hojang"
+      "a": "1930s",
+      "b": "1940s",
+      "c": "1950s",
+      "d": "1960s"
     },
-    "correct_answer": "c",
-    "explanation": "Chad Laho is a dance festival of the Jaintia tribe in Meghalaya, celebrated as a thanksgiving to God after the harvest season. Other folk dances of Meghalaya include Ka Shad Suk Mynsiem (Khasi), Beh-dien-khlam (Jaintia), and Wangala (Garo)."
+    "correct_answer": "b",
+    "explanation": "The ENIAC was completed at the University of Pennsylvania in 1945, falling within the 1940s decade."
   },
   {
     "id": 3,
-    "question": "Which of the following dances of Goa is performed to celebrate the victory of the Maratha warriors over the Portuguese?",
+    "question": "Which computer component is primarily associated with the First Generation of computers (1940s–1950s)?",
     "options": {
-      "a": "Ghodemodni",
-      "b": "Zemmado",
-      "c": "Morulem",
-      "d": "Goff"
+      "a": "Transistors",
+      "b": "Integrated Circuits (ICs)",
+      "c": "Microprocessors",
+      "d": "Vacuum Tubes"
     },
-    "correct_answer": "a",
-    "explanation": "Ghodemodni (Horse dance) is a traditional event in Goa, celebrated in areas like Thane and Sattari, featuring warriors on decorated horses showcasing their martial arts skills to commemorate the victory over the Portuguese."
+    "correct_answer": "d",
+    "explanation": "Vacuum tubes were the primary electronic switching components used in First Generation computers, such as the ENIAC and UNIVAC I, despite their large size and heat output."
   },
   {
     "id": 4,
-    "question": "Which of the following war dances is performed in Ngada festival and is performed by the tribes of Nagaland?",
+    "question": "Who developed the concept of the \"stored-program computer,\" which allows a computer to store instructions in memory alongside data?",
     "options": {
-      "a": "Jawara",
-      "b": "Dalkhai",
-      "c": "Rengma",
-      "d": "Garadi"
+      "a": "Ada Lovelace",
+      "b": "Grace Hopper",
+      "c": "John von Neumann",
+      "d": "Konrad Zuse"
     },
     "correct_answer": "c",
-    "explanation": "The Rengma dance is a war dance performed by the Rengma tribe in Nagaland during the Ngada festival. Other popular dances of Nagaland include Modse and Aaluyattu."
+    "explanation": "John von Neumann developed the fundamental architecture for the stored-program computer, where programs and data reside in the same memory space."
   },
   {
     "id": 5,
-    "question": "In which of the following classical dance forms are the actors' faces painted to symbolise the type of character they are playing?",
+    "question": "The development of the transistor in 1947 by Bell Labs led to which generation of computers?",
     "options": {
-      "a": "Bharatanatyam",
-      "b": "Odissi",
-      "c": "Kathakali",
-      "d": "Kathak"
+      "a": "First Generation",
+      "b": "Second Generation",
+      "c": "Third Generation",
+      "d": "Fourth Generation"
     },
-    "correct_answer": "c",
-    "explanation": "In Kathakali, a classical dance from Kerala, actors' faces are elaborately painted to symbolize characters such as noble gods (Pacha), anti-heroes (Katti), and bearded roles (Thadi). This makeup is a key feature of the dance form."
+    "correct_answer": "b",
+    "explanation": "The invention of the transistor ushered in the Second Generation of computers, replacing vacuum tubes."
   },
   {
     "id": 6,
-    "question": "Which dance is embedded in the stories from the epics Mahabharata, Ramayana and Puranas?",
+    "question": "What was the significance of the UNIVAC I, introduced in 1951?",
     "options": {
-      "a": "Kathakali",
-      "b": "Kuchipudi",
-      "c": "Sattriya",
-      "d": "Odissi"
+      "a": "It was the first computer to use a graphical user interface (GUI).",
+      "b": "It was the first commercial computer to use transistors.",
+      "c": "It was the first commercially available computer.",
+      "d": "It was the first computer to implement the stored-program concept."
     },
-    "correct_answer": "a",
-    "explanation": "Kathakali, which literally means 'story play', is a classical dance form from Kerala that enacts stories from Hindu epics like the Mahabharata, Ramayana, and Puranas through heavy makeup, intricate costumes, and dramatic expressions."
+    "correct_answer": "c",
+    "explanation": "The UNIVAC I (Universal Automatic Computer I) was the first commercial computer produced in the United States and was notably used by the U.S. Census Bureau."
   },
   {
     "id": 7,
-    "question": "Which of the following Indian tribal dances is prevalent in the Araku Valley near Visakhapatnam?",
+    "question": "Which technological advancement marked the Third Generation of computers (mid-1960s to mid-1970s)?",
     "options": {
-      "a": "Dhimsa",
-      "b": "Bagurumba",
-      "c": "Jhumur",
-      "d": "Bardo Chham"
+      "a": "Punched cards",
+      "b": "Integrated Circuits (ICs)",
+      "c": "Vacuum tubes",
+      "d": "Magnetic tape storage"
     },
-    "correct_answer": "a",
-    "explanation": "Dhimsa is a tribal dance form from Andhra Pradesh, particularly prevalent in the Araku Valley near Visakhapatnam. It is performed by the local tribes."
+    "correct_answer": "b",
+    "explanation": "The Third Generation of computers was characterized by the use of Integrated Circuits (ICs), which led to smaller, faster, and more reliable systems."
   },
   {
     "id": 8,
-    "question": "Which Indian classical dance form has composition in Meitei language?",
+    "question": "The development of the microprocessor, which combines the CPU onto a single chip, is associated with which company and product line?",
     "options": {
-      "a": "Sattriya",
-      "b": "Chhau",
-      "c": "Manipuri",
-      "d": "Bharatanatyam"
+      "a": "IBM",
+      "b": "Apple",
+      "c": "Microsoft",
+      "d": "Intel"
     },
-    "correct_answer": "c",
-    "explanation": "Manipuri, the classical dance of Manipur, uses Meitei language in its compositions. It combines Pre-Vaishnavite and Vaishnavite traditions and includes Sankirtana, Rasalila, and the Pung drum dance."
+    "correct_answer": "d",
+    "explanation": "Intel developed the first commercially available microprocessor, the Intel 4004, in 1971."
   },
   {
     "id": 9,
-    "question": "Which of the following dances is performed in Goa during the festival Ganesh Chaturthi?",
+    "question": "Which company introduced the first widely successful personal computer (PC) in 1981?",
     "options": {
-      "a": "Tarangmel",
-      "b": "Dhalo",
-      "c": "Fugdi",
-      "d": "Dhangar"
+      "a": "Apple",
+      "b": "Commodore",
+      "c": "IBM",
+      "d": "Xerox"
     },
     "correct_answer": "c",
-    "explanation": "Fugdi is a folk dance performed by women in Goa during festivals like Ganesh Chaturthi. Other Goan folk dances include Tarangmel and Dhalo."
+    "explanation": "IBM introduced the IBM Personal Computer (IBM PC) in 1981, which established the industry standard for personal computing."
   },
   {
     "id": 10,
-    "question": "Which of the following dance forms emotes a play through dancing in which the song is customarily in Manipravala language?",
+    "question": "What was the primary contribution of Alan Turing to the field of computer science?",
     "options": {
-      "a": "Kathak",
-      "b": "Mohiniattam",
-      "c": "Sattriya",
-      "d": "Kuchipudi"
+      "a": "Designing the first modern integrated circuit.",
+      "b": "Developing the first high-level programming language.",
+      "c": "Formulating the concept of a Turing Machine and breaking the Enigma code.",
+      "d": "Building the first commercial electronic digital computer."
     },
-    "correct_answer": "b",
-    "explanation": "Mohiniattam is a classical dance from Kerala that features graceful movements to narrate Hindu mythological stories. The songs are traditionally in Manipravalam, a blend of Sanskrit and Malayalam."
+    "correct_answer": "c",
+    "explanation": "Alan Turing proposed the Turing Machine, a theoretical model of computation, and played a critical role in breaking the Enigma code during World War II, significantly advancing computer science and cryptography."
   },
   {
     "id": 11,
-    "question": "Mohiniyattam is associated with which of the following traditional dance styles?",
+    "question": "Who is recognized as the world’s first computer programmer?",
     "options": {
-      "a": "Samapadam",
-      "b": "Tribhanga",
-      "c": "Chowk",
-      "d": "Lasya style"
+      "a": "Ada Lovelace",
+      "b": "Grace Hopper",
+      "c": "Bletchley Park",
+      "d": "Konrad Zuse"
     },
-    "correct_answer": "d",
-    "explanation": "Mohiniyattam is a graceful classical dance from Kerala that focuses on expressions and storytelling in the Lasya style, which is characterized by soft, gentle movements."
+    "correct_answer": "a",
+    "explanation": "Ada Lovelace is considered the first computer programmer for her work on Charles Babbage's Analytical Engine, where she wrote a detailed algorithm for calculating Bernoulli numbers."
   },
   {
     "id": 12,
-    "question": "Khuallam is a famous dance of:",
+    "question": "Which significant event in the 1960s is credited with advancing the development of computer networking and eventually leading to the Internet?",
     "options": {
-      "a": "Bihar",
-      "b": "Andhra Pradesh",
-      "c": "Mizoram",
-      "d": "Uttar Pradesh"
+      "a": "The invention of the transistor",
+      "b": "The launch of ARPANET",
+      "c": "The introduction of the IBM PC",
+      "d": "The creation of the first microprocessor"
     },
-    "correct_answer": "c",
-    "explanation": "Khuallam (Dance of the Guests) is a famous dance from Mizoram, usually performed in the ceremony called 'Khuangchawi'. Other dances from Mizoram include Cheraw, Sarlamkai, and Chailam."
+    "correct_answer": "b",
+    "explanation": "ARPANET (Advanced Research Projects Agency Network), launched in 1969, was a precursor to the modern Internet and introduced key concepts like packet switching."
   },
   {
     "id": 13,
-    "question": "Tera Tali folk dance is primarily associated with which of the following states?",
+    "question": "What was the defining characteristic of the Fifth Generation of computers, which began in the 1980s?",
     "options": {
-      "a": "Rajasthan",
-      "b": "Assam",
-      "c": "Madhya Pradesh",
-      "d": "Haryana"
+      "a": "The use of vacuum tubes",
+      "b": "The emergence of personal computers",
+      "c": "Focus on Artificial Intelligence (AI) and parallel processing",
+      "d": "The development of Integrated Circuits"
     },
-    "correct_answer": "a",
-    "explanation": "Terah Tali is a folk dance from Rajasthan, performed in praise of the folk god Ramdevji, primarily by the Kamar tribe. Other Rajasthani folk dances include Ghoomar, Kalbelia, and Kathputli."
+    "correct_answer": "c",
+    "explanation": "The Fifth Generation focuses on advanced computing technologies, including artificial intelligence, neural networks, and parallel processing."
+  },
+  {
+    "id": 14,
+    "question": "Which machine is often considered the first electronic digital computer that was also Turing complete?",
+    "options": {
+      "a": "The Colossus",
+      "b": "The Z3",
+      "c": "The ENIAC",
+      "d": "The Atanasoff–Berry Computer (ABC)"
+    },
+    "correct_answer": "c",
+    "explanation": "While the Z3 and Colossus were early programmable machines, the ENIAC is often cited as the first electronic general-purpose digital computer, although its Turing completeness is debated among historians."
+  },
+  {
+    "id": 15,
+    "question": "Who invented the first computer mouse?",
+    "options": {
+      "a": "Steve Jobs",
+      "b": "Bill Gates",
+      "c": "Douglas Engelbart",
+      "d": "Alan Kay"
+    },
+    "correct_answer": "c",
+    "explanation": "Douglas Engelbart invented the computer mouse and demonstrated it during his \"Mother of All Demos\" presentation in 1968."
+  },
+  {
+    "id": 16,
+    "question": "The development of the transistor occurred at Bell Labs in 1947 by which team of scientists?",
+    "options": {
+      "a": "Robert Noyce and Jack Kilby",
+      "b": "John Bardeen, Walter Brattain, and William Shockley",
+      "c": "John Atanasoff and Clifford Berry",
+      "d": "J. Presper Eckert and John Mauchly"
+    },
+    "correct_answer": "b",
+    "explanation": "Bardeen, Brattain, and Shockley invented the point-contact transistor at Bell Labs in 1947."
+  },
+  {
+    "id": 17,
+    "question": "Which early computer used vacuum tubes, occupied a massive room, and was primarily used for calculating ballistic trajectories for the U.S. Army during World War II?",
+    "options": {
+      "a": "The Harvard Mark I",
+      "b": "The UNIVAC I",
+      "c": "The Colossus",
+      "d": "The ENIAC"
+    },
+    "correct_answer": "d",
+    "explanation": "The ENIAC (Electronic Numerical Integrator and Computer) was a massive vacuum-tube machine used for ballistic calculations during WWII."
+  },
+  {
+    "id": 18,
+    "question": "In what year did the World Wide Web, developed by Tim Berners-Lee, become publicly available?",
+    "options": {
+      "a": "1985",
+      "b": "1991",
+      "c": "1995",
+      "d": "2000"
+    },
+    "correct_answer": "b",
+    "explanation": "The World Wide Web became publicly available in August 1991, following its development by Tim Berners-Lee at CERN."
+  },
+  {
+    "id": 19,
+    "question": "Which programming language, developed in the late 1950s, was designed primarily for business applications and remains widely used in legacy systems?",
+    "options": {
+      "a": "FORTRAN",
+      "b": "COBOL",
+      "c": "LISP",
+      "d": "C++"
+    },
+    "correct_answer": "b",
+    "explanation": "COBOL (Common Business-Oriented Language) was developed specifically for business, finance, and administrative applications in 1959."
+  },
+  {
+    "id": 20,
+    "question": "What was the main innovation introduced by the Xerox Alto, developed at Xerox PARC in the 1970s?",
+    "options": {
+      "a": "The first microprocessor",
+      "b": "The first integrated circuit",
+      "c": "The first commercially viable vacuum tube computer",
+      "d": "The first computer to use a graphical user interface (GUI) and a mouse"
+    },
+    "correct_answer": "d",
+    "explanation": "The Xerox Alto pioneered the use of a graphical user interface (GUI) and the mouse, which significantly influenced subsequent personal computers like the Apple Macintosh."
   }
 ]

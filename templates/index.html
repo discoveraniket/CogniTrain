@@ -11,21 +11,45 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h2>AI Practice Coach</h2>
-            <p>Your personal tutor for exam prep</p>
+    <div class="main-container">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>AI Practice Coach</h2>
+                <p>Your personal tutor for exam prep</p>
+            </div>
+            <div class="chat-box" id="chat-box">
+                <!-- Messages will be dynamically added here -->
+            </div>
+            <form class="chat-input-form" id="chat-input-form">
+                <input type="text" id="user-input" class="user-input" placeholder="Type your answer or ask a question...">
+                <button type="submit" class="send-btn" aria-label="Send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
         </div>
-        <div class="chat-box" id="chat-box">
-            <!-- Messages will be dynamically added here -->
+
+        <!-- DEVELOPMENT_ONLY: LLM Debug Info -->
+        <div class="development-info-container" id="development-info-container" style="display: none;">
+            <div class="dev-info-header">
+                <h3>LLM Development Info</h3>
+                <span class="dev-info-toggle" id="dev-info-toggle">-</span>
+            </div>
+            <div class="dev-info-content" id="dev-info-content">
+                <div class="dev-info-section">
+                    <h4>Question Selection Rationale</h4>
+                    <p id="dev-rationale"></p>
+                </div>
+                <div class="dev-info-section">
+                    <h4>Student Model Analysis</h4>
+                    <pre id="dev-student-model"></pre>
+                </div>
+                <div class="dev-info-section">
+                    <h4>Raw LLM Response</h4>
+                    <pre id="dev-raw-response"></pre>
+                </div>
+            </div>
         </div>
-        <form class="chat-input-form" id="chat-input-form">
-            <input type="text" id="user-input" class="user-input" placeholder="Type your answer or ask a question...">
-            <button type="submit" class="send-btn" aria-label="Send">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </form>
-    </div>
+        <!-- END DEVELOPMENT_ONLY -->
 
     <!-- HTML Templates for Messages -->
     <template id="tutor-message-template">

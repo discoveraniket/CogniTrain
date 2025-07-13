@@ -1,5 +1,6 @@
 import json
 
+
 def build_prompt2(chat_history, all_questions, current_question_index):
     return f"""
     You are the brain of an AI-powered MCQ practice coach. Your task is to analyze the full context of a user's 
@@ -56,13 +57,15 @@ def build_prompt2(chat_history, all_questions, current_question_index):
         ```
 
     * **If intent is `START_QUIZ` or `REQUEST_NEXT_QUESTION`:**
-        (Select the appropriate question from the question bank using the **Question Selection Strategy** described above. If the quiz is over, use END_QUIZ instead).
+        (Select the appropriate question from the question bank using the **Question Selection Strategy** described above. If it is the first question choose a question randomly from the question bank. If the quiz is over, use END_QUIZ instead).
         ```json
         {{
           "action": "ASK_QUESTION",
           "coach_response": "A brief transition phrase like 'Great, here's the first one:' or 'Here is the next question.'",
           "question_index": <index_of_the_next_question>,
-          "question": {{ ... a full question object from the bank ... }}
+          "question": {{ ... a full question object from the bank ... }},
+          "question_selection_rationale": "A concise explanation of why this specific question was chosen based on the student's performance and the spaced repetition strategy.",
+          "student_model_analysis": "A concise analysis of the user's strengths and weaknesses detected so far, their learning curve and mention how the responce time of the user contributed to your analysis. (For development only)" # DEVELOPMENT_ONLY: This field is for debugging and will be removed.
         }}
         ```
 
@@ -93,6 +96,7 @@ def build_prompt2(chat_history, all_questions, current_question_index):
         }}
         ```
     """
+
 
 def build_prompt1(chat_history, all_questions, current_question_index):
     return f"""
