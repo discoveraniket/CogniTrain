@@ -1,26 +1,28 @@
 """
 This module provides a wrapper for interacting with the Google Gemini API.
-It embodies the "Pure LLM-Cognition" model by using a single, comprehensive
-prompt to delegate all cognitive tasks to the LLM.
+It uses a system instruction to guide the model's behavior and requests
+structured JSON output for reliable application logic, using the genai.Client pattern.
 """
 
 import os
 import json
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from typing import List, Dict, Any
-from prompts import build_prompt2 as bp
+from prompts import SYSTEM_INSTRUCTION, build_user_prompt
 
 # --- API Configuration ---
+client = None
 try:
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise ValueError("GEMINI_API_KEY environment variable not found.")
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.5-flash")
-    print("--- Gemini Service: Successfully configured and initialized. ---")
+
+    # Initialize the client
+    client = genai.Client(api_key=api_key)
+    print("--- Gemini Service: Successfully configured and client initialized. ---")
 except Exception as e:
     print(f"--- Gemini Service Error: {e} ---")
-    model = None
 
 
 def get_llm_decision(
@@ -31,53 +33,53 @@ def get_llm_decision(
     """
     Gets a comprehensive decision from the LLM for the next step in the conversation.
 
-    This function constructs a "master prompt" that provides the LLM with all
-    necessary context and asks it to perform all cognitive tasks, including
-    intent classification, performance analysis, action selection, and response generation.
+    This function sends the dynamic user context to the model via the client,
+    which is guided by the system instruction. It requests a JSON object as a response.
 
     Args:
-        chat_history: The full history of the conversation, including timestamps.
+        chat_history: The full history of the conversation.
         all_questions: The entire list of available multiple-choice questions.
-        current_question_index: The index of the question the user is currently on.
+        current_question_index: The index of the current question.
 
     Returns:
         A dictionary representing the LLM's structured JSON decision.
     """
-    if not model:
+    if not client:
         raise RuntimeError(
-            "Gemini model is not initialized. Check API key and configuration."
+            "Gemini client is not initialized. Check API key and configuration."
         )
 
-    # The Master Prompt
-    prompt = bp(chat_history, all_questions, current_question_index)
+    # Build the user prompt with the dynamic context
+    user_prompt = build_user_prompt(chat_history, all_questions, current_question_index)
 
-    # --- DEVELOPMENT_ONLY_START ---
-    # Print prompt for debugging purposes. This will be removed later.
-    print("--- Gemini Service: Generated Prompt (DEVELOPMENT_ONLY) ---")
-    print(prompt)
-    print("----------------------------------------------------------")
-    # --- DEVELOPMENT_ONLY_END ---
-
-    print("--- Gemini Service: Requesting decision from LLM with master prompt. ---")
+    print(
+        "--- Gemini Service: Requesting decision from LLM with user prompt via client. ---"
+    )
     try:
-        response = model.generate_content(
-            prompt,
-            generation_config=genai.types.GenerationConfig(
-                response_mime_type="application/json"
+        # Request structured JSON output using the client
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=user_prompt,
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM_INSTRUCTION,
+                response_mime_type="application/json",
             ),
         )
+
         # --- DEVELOPMENT_ONLY_START ---
-        # Print raw LLM response for debugging. This will be removed later.
+        # Print raw LLM response for debugging
         print("--- Gemini Service: Raw LLM Response (DEVELOPMENT_ONLY) ---")
         print(response.text)
         print("----------------------------------------------------------")
         # --- DEVELOPMENT_ONLY_END ---
 
         llm_decision = json.loads(response.text)
+
         # --- DEVELOPMENT_ONLY_START ---
-        # Add raw LLM response to the decision for UI display. This will be removed later.
+        # Add raw LLM response to the decision for UI display
         llm_decision["_development_info"] = response.text
         # --- DEVELOPMENT_ONLY_END ---
+
         return llm_decision
     except Exception as e:
         print(f"--- Gemini API Error: {e} ---")

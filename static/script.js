@@ -4,6 +4,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('user-input');
     const tutorMessageTemplate = document.getElementById('tutor-message-template');
     const userMessageTemplate = document.getElementById('user-message-template');
+    
+    // --- About Modal Elements ---
+    const infoButton = document.getElementById('info-button');
+    const aboutModal = document.getElementById('about-modal');
+    const closeModalButton = document.getElementById('close-modal-button');
+
+    // --- About Modal Logic ---
+    if (infoButton && aboutModal && closeModalButton) {
+        infoButton.addEventListener('click', () => {
+            aboutModal.classList.remove('hidden');
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            aboutModal.classList.add('hidden');
+        });
+
+        aboutModal.addEventListener('click', (e) => {
+            // Close modal if user clicks on the overlay (outside the content)
+            if (e.target === aboutModal) {
+                aboutModal.classList.add('hidden');
+            }
+        });
+    }
+
 
     // --- Core Functions ---
 
