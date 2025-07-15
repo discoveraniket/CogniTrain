@@ -80,19 +80,31 @@ The application's architecture follows a "Pure LLM-Cognition" model, where the F
 
 ```
 CogniTrain/
+├── assets/
+│   ├── About_Section.png
+│   ├── AI_Cognitive_Info_Panel.png
+│   ├── Correct_Answer.png
+│   ├── First_Question.png
+│   ├── Incorrect_Answer_with_Hint1.png
+│   ├── Incorrect_Answer_with_Hint2.png
+│   └── Initial_Welcome.png
 ├── src/
 │   ├── app.py                # Main Flask application (data marshaller)
 │   ├── gemini_service.py     # Wrapper for Google Gemini API interaction
 │   ├── prompts.py            # Contains the master prompt for the LLM
 │   ├── question_bank.py      # Loads questions from the JSON file
-│   └── mcq.json              # Default question bank
+│   ├── mcq.json              # Default question bank
+│   └── mcq2.json
 ├── static/
+│   ├── AI.jpg
 │   ├── script.js             # Frontend logic for the chat interface
 │   └── style.css             # Styling for the application
 ├── templates/
 │   └── index.html            # Main HTML page for the chat interface
+├── .gitignore
+├── LICENSE
+├── README.md                 # This file
 ├── requirements.txt          # Python dependencies
-└── README.md                 # This file
 ```
 
 ---
