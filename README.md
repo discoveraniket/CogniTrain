@@ -120,7 +120,7 @@ CogniTrain/
 
 ## 👨‍💻 Author
 
-**Aniket Sarkar**
+[**Aniket Sarkar**](https://github.com/discoveraniket)
 
 ---
 
