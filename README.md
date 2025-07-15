@@ -23,6 +23,19 @@ The application's architecture follows a "Pure LLM-Cognition" model, where the F
 
 ---
 
+## 📸 Screenshots
+
+| Initial Welcome | First Question | Correct Answer |
+| :---: | :---: | :---: |
+| ![Initial Welcome](assets/Initial_Welcome.png) | ![First Question](assets/First_Question.png) | ![Correct Answer](assets/Correct_Answer.png) |
+
+| Incorrect Answer with Hint | About Section | AI Cognitive Info Panel |
+| :---: | :---: | :---: |
+| ![Incorrect Answer with Hint](assets/Incorrect_Answer_with_Hint1.png) | ![About Section](assets/About_Section.png) | ![AI Cognitive Info Panel](assets/AI_Cognitive_Info_Panel.png) |
+
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
