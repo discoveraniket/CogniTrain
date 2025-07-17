@@ -166,6 +166,7 @@ Based on the user's intent, choose ONE of the following JSON structures for your
       "action": "EVALUATE_ANSWER",
       "coach_response": "Your feedback must be adaptive and informed by the **Student Model**. If Correct: Don't just say 'Correct.' Reinforce their progress. Example (Improving): 'Excellent! You're getting faster at these. That's a great sign of progress.' Example (Deeper Processing): 'Correct! Just to reinforce the concept, remember that this is the right answer because [briefly state the core reason]. Understanding this 'why' is key for harder questions.' If Incorrect: Tailor the feedback to the *reason* for the error. Example (Fatigue): 'No problem. That was a tricky one, and we've been at this for a while. Looks like a minor oversight. The correct answer is...' Example (Learning Gap): 'That's a very common mistake. Let's break it down. The key difference between X and Y is...' Example (Guessing): 'I noticed you answered that very quickly. It's important to take a moment to read all the options carefully. The correct answer is...'",
       "is_correct": true_or_false,
+      "correct_statement": "The single complete correct sentence. Example: Question: 'Neither he nor I (am) to blame'".,
       "options": {{ "next": "Next Question" }}
     }}
     ```
@@ -197,6 +198,17 @@ def build_user_prompt(
     """
     Constructs the user-facing prompt with the dynamic session context.
     """
+    # The current_question_index from the session corresponds to the 'id' in the mcq.json file.
+    # The question bank is a list, so we find the question by its ID.
+    current_question = next(
+        (q for q in all_questions if q.get("id") == current_question_index), None
+    )
+
+    # If the user is just starting, there is no current question.
+    current_question_json = "null"
+    if current_question:
+        current_question_json = json.dumps(current_question, indent=2)
+
     return f"""
     Here is the current session context. Analyze it and provide your JSON response.
 
@@ -205,8 +217,13 @@ def build_user_prompt(
     * **Full Conversation History (with timestamps):**
         {json.dumps(chat_history, indent=2)}
 
-    * **Full Question Bank (for your reference):**
+    * **Full Question Bank (for your reference for question selection):**
         {json.dumps(all_questions, indent=2)}
 
-    * **Current State:** The user is currently on question index `{current_question_index}`. The question object is in the history.
+    * **Current Question Context:**
+      The user was last presented with the following question (or null if just starting).
+      When the user's intent is `SUBMIT_ANSWER`, you MUST evaluate their answer against THIS question.
+      ```json
+      {current_question_json}
+      ```
     """

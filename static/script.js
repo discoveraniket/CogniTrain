@@ -150,7 +150,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Action: EVALUATE_ANSWER -> Render feedback and "Next Question" button
         else if (response.action === 'EVALUATE_ANSWER' && response.options) {
-            const tutorMessageContainer = addMessage(response.coach_response, 'tutor');
+            let feedbackHtml = `<div class="message-bubble">${response.coach_response}</div>`;
+            // If the AI provides the correct statement, add it to the message.
+            if (response.correct_statement) {
+                feedbackHtml += `
+                    <div class="message-bubble correct-statement">
+                        <strong>Correct Fact:</strong> ${response.correct_statement}
+                    </div>
+                `;
+            }
+            const tutorMessageContainer = addMessage(feedbackHtml, 'tutor', true);
             renderOptions(tutorMessageContainer, response.options, false);
             setInputState(false, "Type your answer or ask a question...");
         }

@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "question": "Neither he nor I ________________ to blame",
+    "options": {
+      "a": "am",
+      "b": "is",
+      "c": "are",
+      "d": "were"
+    },
+    "correct_answer": "a",
+    "explanation": "In case of neither or nor the verb agrees according to the nearest subject."
+  },
+  {
+    "id": 2,
+    "question": "Each of the students ________________ completed the assignment",
+    "options": {
+      "a": "has",
+      "b": "have",
+      "c": "is",
+      "d": "are"
+    },
+    "correct_answer": "a",
+    "explanation": "Each is always singular and requires a singular verb."
+  },
+  {
+    "id": 3,
+    "question": "Neither the teacher nor the students ________________ aware of the change",
+    "options": {
+      "a": "was",
+      "b": "am",
+      "c": "is",
+      "d": "are"
+    },
+    "correct_answer": "b",
+    "explanation": "When subjects are joined by 'nor', the verb agrees with the nearest subject (students)."
+  },
+  {
+    "id": 4,
+    "question": "Fifty dollars ________________ too much for that book",
+    "options": {
+      "a": "seem",
+      "b": "seems",
+      "c": "are",
+      "d": "were"
+    },
+    "correct_answer": "b",
+    "explanation": "Amounts of money take singular verbs."
+  },
+  {
+    "id": 5,
+    "question": "The news ________________ shocking to everyone",
+    "options": {
+      "a": "was",
+      "b": "were",
+      "c": "are",
+      "d": "have been"
+    },
+    "correct_answer": "a",
+    "explanation": "News appears plural but is always singular."
+  },
+  {
+    "id": 6,
+    "question": "Either the manager or his assistants ________________ responsible",
+    "options": {
+      "a": "is",
+      "b": "are",
+      "c": "was",
+      "d": "has been"
+    },
+    "correct_answer": "b",
+    "explanation": "When subjects are joined by 'or', the verb agrees with the nearest subject (assistants)."
+  },
+  {
+    "id": 7,
+    "question": "Mathematics ________________ my favorite subject",
+    "options": {
+      "a": "is",
+      "b": "are",
+      "c": "were",
+      "d": "have been"
+    },
+    "correct_answer": "a",
+    "explanation": "Academic subjects ending in -ics take singular verbs."
+  },
+  {
+    "id": 8,
+    "question": "The boy with his friends ________________ playing football now",
+    "options": {
+      "a": "was",
+      "b": "were",
+      "c": "is",
+      "d": "am"
+    },
+    "correct_answer": "c",
+    "explanation": "The true subject is 'the boy' (singular), not the prepositional phrase."
+  },
+  {
+    "id": 9,
+    "question": "Both the director and the producer ________________ present yesterday",
+    "options": {
+      "a": "was",
+      "b": "were",
+      "c": "is",
+      "d": "are"
+    },
+    "correct_answer": "d",
+    "explanation": "'Both...and' constructions always take plural verbs."
+  },
+  {
+    "id": 10,
+    "question": "There ________________ many reasons for his decision",
+    "options": {
+      "a": "is",
+      "b": "are",
+      "c": "was",
+      "d": "has been"
+    },
+    "correct_answer": "b",
+    "explanation": "The verb agrees with the plural subject 'reasons' after the dummy subject 'there'."
+  },
+  {
+    "id": 11,
+    "question": "The pair of shoes ________________ on sale",
+    "options": {
+      "a": "is",
+      "b": "are",
+      "c": "were",
+      "d": "have been"
+    },
+    "correct_answer": "a",
+    "explanation": "The subject is 'pair' (singular), not 'shoes'."
+  },
+  {
+    "id": 12,
+    "question": "Ten miles ________________ a long distance to walk",
+    "options": {
+      "a": "seem",
+      "b": "seems",
+      "c": "are",
+      "d": "were"
+    },
+    "correct_answer": "b",
+    "explanation": "Measurements as a single unit take singular verbs."
+  },
+  {
+    "id": 13,
+    "question": "Neither of the options ________________ acceptable",
+    "options": {
+      "a": "is",
+      "b": "are",
+      "c": "were",
+      "d": "have been"
+    },
+    "correct_answer": "a",
+    "explanation": "'Neither' is always singular."
+  },
+  {
+    "id": 14,
+    "question": "The staff ________________ meeting in separate rooms today",
+    "options": {
+      "a": "is",
+      "b": "are",
+      "c": "was",
+      "d": "were"
+    },
+    "correct_answer": "b",
+    "explanation": "Collective nouns take plural verbs when members act individually."
+  },
+  {
+    "id": 15,
+    "question": "My sister, not my brothers, ________________ the keys",
+    "options": {
+      "a": "has",
+      "b": "have",
+      "c": "had",
+      "d": "having"
+    },
+    "correct_answer": "a",
+    "explanation": "The true subject is 'sister' (singular), ignoring the interrupting phrase."
+  },
+  {
+    "id": 16,
+    "question": "All of the cake ________________ been eaten",
+    "options": {
+      "a": "has",
+      "b": "have",
+      "c": "is",
+      "d": "are"
+    },
+    "correct_answer": "a",
+    "explanation": "'All' takes singular verbs when referring to uncountable nouns."
+  },
+  {
+    "id": 17,
+    "question": "The jury ________________ reached their verdict",
+    "options": {
+      "a": "has",
+      "b": "have",
+      "c": "is",
+      "d": "are"
+    },
+    "correct_answer": "b",
+    "explanation": "Collective nouns take plural verbs when emphasizing individual members."
+  },
+  {
+    "id": 18,
+    "question": "Nobody except the engineers ________________ how it works",
+    "options": {
+      "a": "know",
+      "b": "knows",
+      "c": "knowing",
+      "d": "have known"
+    },
+    "correct_answer": "b",
+    "explanation": "The true subject is 'nobody' (singular), not the prepositional phrase."
+  },
+  {
+    "id": 19,
+    "question": "Bread and butter ________________ his usual breakfast",
+    "options": {
+      "a": "is",
+      "b": "are",
+      "c": "were",
+      "d": "have been"
+    },
+    "correct_answer": "a",
+    "explanation": "Compound nouns representing a single item take singular verbs."
+  },
+  {
+    "id": 20,
+    "question": "Either the CEO or her board members ________________ attending",
+    "options": {
+      "a": "is",
+      "b": "are",
+      "c": "was",
+      "d": "has been"
+    },
+    "correct_answer": "b",
+    "explanation": "When subjects are joined by 'or', the verb agrees with the nearer subject (members)."
+  }
+]
