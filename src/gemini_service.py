@@ -67,9 +67,13 @@ def get_llm_decision(
         )
 
         # --- DEVELOPMENT_ONLY_START ---
+        # Print raw prompt being sent to LLM for debugging
+        print(user_prompt)
+
+
         # Print raw LLM response for debugging
-        print("--- Gemini Service: Raw LLM Response (DEVELOPMENT_ONLY) ---")
-        print(response.text)
+        # print("--- Gemini Service: Raw LLM Response (DEVELOPMENT_ONLY) ---")
+        # print(response.text)
         print("----------------------------------------------------------")
         # --- DEVELOPMENT_ONLY_END ---
 
