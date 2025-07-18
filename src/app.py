@@ -90,10 +90,9 @@ def chat():
     except Exception as e:
         return jsonify({"error": f"An error occurred with the AI service: {e}"}), 500
 
-    # 5. Update session state if a new question has been selected.
-    # We check for the presence of 'question_index' to know when to update the state.
-    if "question_index" in llm_decision:
-        session["current_question_index"] = llm_decision["question_index"]
+    # 5. Update session state based on LLM's decision
+    if llm_decision.get("action") == "ASK_QUESTION":
+        session["current_question_index"] = llm_decision.get("question_index", 0)
 
     # 6. Add AI response to history and save back to session
     chat_history.append(
