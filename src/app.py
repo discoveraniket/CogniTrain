@@ -9,7 +9,7 @@ LLM's decision to the frontend.
 
 import sys
 import os
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify
 from datetime import datetime
 import json
 
@@ -20,31 +20,20 @@ from src import question_bank
 from src import gemini_service
 
 # Initialize the Flask application
-# Get the absolute path to the directory containing app.py (which is src)
 current_dir = os.path.dirname(os.path.abspath(__file__))
-# Get the project root directory (one level up from src)
 project_root = os.path.abspath(os.path.join(current_dir, ".."))
-
-# Construct absolute paths for templates and static folders
 template_dir = os.path.join(project_root, "templates")
 static_dir = os.path.join(project_root, "static")
 
-print(f"Template directory: {template_dir}")
-print(f"Static directory: {static_dir}")
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
-# A secret key is required for Flask session management
 app.secret_key = os.urandom(24)
 
 
 @app.route("/")
 def index():
     """
-    Serves the main HTML page and initializes the session.
+    Serves the main HTML page. State is managed entirely on the client-side.
     """
-    # Clear session data for a new visit
-    session.clear()
-    session["chat_history"] = []
-    session["current_question_index"] = 0
     return render_template("index.html")
 
 
@@ -52,19 +41,16 @@ def index():
 def chat():
     """
     Handles all incoming chat messages from the user.
-    This single endpoint orchestrates the entire conversation flow by
-    delegating all decisions to the gemini_service.
+    This endpoint is now stateless, relying on the client to send the full context.
     """
-    # 1. Get current state from the session
-    chat_history = session.get("chat_history", [])
-    current_question_index = session.get("current_question_index", 0)
+    # 1. Get state from the client request
+    data = request.json
+    user_message = data.get("message")
+    current_question_index = data.get("current_question_index", 0)
+    chat_history = data.get("chat_history", []) # Get history from client
 
-    # 2. Get user message and add it to history with a timestamp
-    user_message = request.json.get("message")
-    if not user_message:
-        # On the first load, the frontend sends an empty message to get the greeting
-        print("Initial call from frontend to get greeting.")
-    else:
+    # 2. Add the current user message to the history for processing
+    if user_message:
         chat_history.append(
             {
                 "role": "user",
@@ -72,6 +58,10 @@ def chat():
                 "timestamp": datetime.now().isoformat(),
             }
         )
+    else:
+        # This handles the initial "hello" from the frontend
+        print("Initial call from frontend to get greeting.")
+
 
     # 3. Load the full question bank
     try:
@@ -88,26 +78,14 @@ def chat():
             current_question_index=current_question_index,
         )
     except Exception as e:
+        # Log the full error for debugging
+        print(f"Error calling Gemini service: {e}")
         return jsonify({"error": f"An error occurred with the AI service: {e}"}), 500
 
-    # 5. Update session state based on LLM's decision
-    if llm_decision.get("action") == "ASK_QUESTION":
-        session["current_question_index"] = llm_decision.get("question_index", 0)
-
-    # 6. Add AI response to history and save back to session
-    chat_history.append(
-        {
-            "role": "model",
-            "content": llm_decision.get("coach_response"),
-            "timestamp": datetime.now().isoformat(),
-        }
-    )
-    session["chat_history"] = chat_history
-
-    # 7. Return the LLM's decision to the frontend
+    # 5. Return the LLM's decision directly to the frontend
+    # The client is now responsible for maintaining its own state.
     return jsonify(llm_decision)
 
 
 if __name__ == "__main__":
-    # The host '0.0.0.0' makes it accessible on your local network.
     app.run(host="0.0.0.0", port=5000, debug=True)

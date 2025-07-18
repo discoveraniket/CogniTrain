@@ -262,8 +262,13 @@ body {
 }
 
 .header-content {
-    text-align: center;
+    text-align: left;
     flex-grow: 1;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 0.75rem;
 }
 
 .info-button {
@@ -274,6 +279,7 @@ body {
     cursor: pointer;
     opacity: 0.8;
     transition: opacity 0.2s;
+    padding: 0; /* Remove padding for cleaner alignment */
 }
 
 .info-button:hover {

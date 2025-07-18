@@ -9,71 +9,107 @@ document.addEventListener('DOMContentLoaded', () => {
     const infoButton = document.getElementById('info-button');
     const aboutModal = document.getElementById('about-modal');
     const closeModalButton = document.getElementById('close-modal-button');
+    const startOverButton = document.getElementById('start-over-button');
+
+    // --- Client-side State ---
+    let currentQuestionIndex = 0;
+    let chatHistory = []; // Holds the structured chat history for the backend
+    const SESSION_KEY = 'cogniTrainSession';
+
+    function saveSession() {
+        const sessionData = {
+            chatHTML: chatBox.innerHTML,
+            userInputEnabled: !userInput.disabled,
+            userInputPlaceholder: userInput.placeholder,
+            currentQuestionIndex: currentQuestionIndex,
+            chatHistory: chatHistory
+        };
+        localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+    }
+
+    function loadSession() {
+        const savedSession = localStorage.getItem(SESSION_KEY);
+        if (savedSession) {
+            const sessionData = JSON.parse(savedSession);
+            chatBox.innerHTML = sessionData.chatHTML;
+            setInputState(!sessionData.userInputEnabled, sessionData.userInputPlaceholder);
+            currentQuestionIndex = sessionData.currentQuestionIndex || 0;
+            chatHistory = sessionData.chatHistory || [];
+            
+            const lastOptionsContainer = chatBox.querySelector('.options-container-in-chat:last-of-type');
+            if (lastOptionsContainer) {
+                lastOptionsContainer.querySelectorAll('.quick-reply').forEach(btn => {
+                    if (!btn.disabled) {
+                        btn.disabled = false;
+                    }
+                });
+            }
+            scrollToBottom();
+            return true;
+        }
+        return false;
+    }
+
+    function clearSession() {
+        localStorage.removeItem(SESSION_KEY);
+        currentQuestionIndex = 0;
+        chatHistory = [];
+    }
 
     // --- About Modal Logic ---
     if (infoButton && aboutModal && closeModalButton) {
         infoButton.addEventListener('click', () => {
             aboutModal.classList.remove('hidden');
         });
-
         closeModalButton.addEventListener('click', () => {
             aboutModal.classList.add('hidden');
         });
-
         aboutModal.addEventListener('click', (e) => {
-            // Close modal if user clicks on the overlay (outside the content)
             if (e.target === aboutModal) {
                 aboutModal.classList.add('hidden');
             }
         });
     }
 
+    // --- Start Over Logic ---
+    if (startOverButton) {
+        startOverButton.addEventListener('click', () => {
+            if (confirm('Are you sure you want to start over? Your current progress will be lost.')) {
+                clearSession();
+                chatBox.innerHTML = ''; // Visually clear the chat
+                sendMessage(''); // Start a new conversation
+            }
+        });
+    }
 
     // --- Core Functions ---
-
-    // --- DEVELOPMENT_ONLY_START ---
     function setupDevInfoToggle() {
         const devContainer = document.getElementById('development-info-container');
         const toggle = document.getElementById('dev-info-toggle');
         if (devContainer && toggle) {
-            // Set initial state to minimized
             devContainer.classList.add('minimized');
-            toggle.textContent = '+'; // Set initial toggle text
-
+            toggle.textContent = '+';
             toggle.addEventListener('click', () => {
                 const isMinimized = devContainer.classList.contains('minimized');
-                if (isMinimized) {
-                    devContainer.classList.remove('minimized');
-                    toggle.textContent = '-';
-                } else {
-                    devContainer.classList.add('minimized');
-                    toggle.textContent = '+';
-                }
+                devContainer.classList.toggle('minimized');
+                toggle.textContent = isMinimized ? '-' : '+';
             });
         }
     }
 
     function updateDevelopmentInfo(response) {
-        // This key is added by the backend for development purposes.
-        if (!response._development_info) {
-            return;
-        }
-
+        if (!response._development_info) return;
         const devContainer = document.getElementById('development-info-container');
         const rationaleEl = document.getElementById('dev-rationale');
         const studentModelEl = document.getElementById('dev-student-model');
         const rawResponseEl = document.getElementById('dev-raw-response');
-
         if (devContainer && rationaleEl && studentModelEl && rawResponseEl) {
             rationaleEl.textContent = response.question_selection_rationale || 'N/A';
             studentModelEl.textContent = JSON.stringify(response.student_model_analysis, null, 2) || 'N/A';
             rawResponseEl.textContent = response._development_info;
-
-            // Ensure the container is visible, but its minimized state is controlled by the class
-            devContainer.style.display = 'block'; 
+            devContainer.style.display = 'block';
         }
     }
-    // --- DEVELOPMENT_ONLY_END ---
 
     function scrollToBottom() {
         chatBox.scrollTop = chatBox.scrollHeight;
@@ -82,18 +118,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function addMessage(content, type, isHtml = false) {
         const template = type === 'tutor' ? tutorMessageTemplate : userMessageTemplate;
         const messageClone = template.content.cloneNode(true);
-        
         const container = messageClone.querySelector(type === 'tutor' ? '.message-content' : '.message-bubble');
+        
         if (isHtml) {
             container.innerHTML = content;
         } else {
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = content;
             if (type === 'tutor') {
-                const bubble = document.createElement('div');
-                bubble.className = 'message-bubble';
-                bubble.textContent = content;
                 container.appendChild(bubble);
             } else {
-                container.textContent = content;
+                 container.textContent = content;
             }
         }
         
@@ -111,16 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderOptions(container, options, isQuestion = true) {
         const optionsContainer = document.createElement('div');
         optionsContainer.className = 'options-container-in-chat';
-        
         const optionsHtml = Object.entries(options)
             .map(([key, value]) => {
-                // If it's a question, the data-key is the option letter (a, b, c).
-                // If it's a greeting, the data-key is the action (begin).
                 const dataAttribute = isQuestion ? `data-key="${key}"` : `data-action="${key}"`;
                 return `<button class="quick-reply" ${dataAttribute}>${value}</button>`;
             })
             .join('');
-            
         optionsContainer.innerHTML = optionsHtml;
         container.appendChild(optionsContainer);
     }
@@ -132,69 +164,65 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Action: GREET_USER -> Render "Let's Begin" button
+        // Add AI response to history
+        chatHistory.push({ role: 'model', content: response.coach_response });
+
+        if (response.question_index !== undefined) {
+            currentQuestionIndex = response.question_index;
+        }
+
         if (response.action === 'GREET_USER' && response.options) {
             const tutorMessageContainer = addMessage(response.coach_response, 'tutor');
             renderOptions(tutorMessageContainer, response.options, false);
-            setInputState(false, "Type your answer or ask a question...");
-        } 
-        // Action: ASK_QUESTION -> Render the question and its options
-        else if (response.action === 'ASK_QUESTION' && response.question) {
-            const messageHtml = `
-                <div class="message-bubble">${response.coach_response}</div>
-                <div class="message-bubble">${response.question.question}</div>
-            `;
+        } else if (response.action === 'ASK_QUESTION' && response.question) {
+            const messageHtml = `<div class="message-bubble">${response.coach_response}</div><div class="message-bubble">${response.question.question}</div>`;
             const tutorMessageContainer = addMessage(messageHtml, 'tutor', true);
             renderOptions(tutorMessageContainer, response.question.options, true);
-            setInputState(false, "Type your answer or ask a question...");
-        }
-        // Action: EVALUATE_ANSWER -> Render feedback and "Next Question" button
-        else if (response.action === 'EVALUATE_ANSWER' && response.options) {
+        } else if (response.action === 'EVALUATE_ANSWER' && response.options) {
             let feedbackHtml = `<div class="message-bubble">${response.coach_response}</div>`;
-            // If the AI provides the correct statement, add it to the message.
             if (response.correct_statement) {
-                feedbackHtml += `
-                    <div class="message-bubble correct-statement">
-                        <strong>Correct Fact:</strong> ${response.correct_statement}
-                    </div>
-                `;
+                feedbackHtml += `<div class="message-bubble correct-statement"><strong>Correct Fact:</strong> ${response.correct_statement}</div>`;
             }
             const tutorMessageContainer = addMessage(feedbackHtml, 'tutor', true);
             renderOptions(tutorMessageContainer, response.options, false);
-            setInputState(false, "Type your answer or ask a question...");
-        }
-        // Action: END_QUIZ -> Display final message
-        else if (response.action === 'END_QUIZ') {
+        } else if (response.action === 'END_QUIZ') {
             addMessage(response.coach_response, 'tutor');
-            setInputState(false, "Quiz finished. Refresh to start again.");
-        }
-        // Fallback for any other case
-        else {
+            setInputState(true, "Quiz finished. Refresh to start again.");
+            clearSession();
+        } else {
             addMessage(response.coach_response || "Sorry, something went wrong.", 'tutor');
+        }
+
+        if (response.action !== 'END_QUIZ') {
             setInputState(false);
         }
-        // --- DEVELOPMENT_ONLY_START ---
+        
         updateDevelopmentInfo(response);
-        // --- DEVELOPMENT_ONLY_END ---
+        saveSession();
     }
 
     async function sendMessage(messageText) {
-        console.log('sendMessage called with:', messageText);
         if (messageText) {
             addMessage(messageText, 'user');
+            chatHistory.push({ role: 'user', content: messageText });
         }
+        
         setInputState(true, "Coach is thinking...");
+        saveSession();
         
         try {
             const res = await fetch('/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: messageText }),
+                body: JSON.stringify({
+                    message: messageText,
+                    current_question_index: currentQuestionIndex,
+                    chat_history: chatHistory.slice(0, -1) // Send history *before* the current message
+                }),
             });
 
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             const data = await res.json();
-            console.log('Received backend response:', data);
             await handleBackendResponse(data);
 
         } catch (error) {
@@ -205,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Event Listeners ---
-
     chatForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const userText = userInput.value.trim();
@@ -218,17 +245,16 @@ document.addEventListener('DOMContentLoaded', () => {
     chatBox.addEventListener('click', (e) => {
         if (e.target.classList.contains('quick-reply')) {
             const button = e.target;
-            // Disable all buttons in the same group
             button.closest('.options-container-in-chat').querySelectorAll('.quick-reply').forEach(btn => btn.disabled = true);
-            
             const choiceText = button.textContent;
             sendMessage(choiceText);
         }
     });
 
     // --- Start the conversation ---
-    sendMessage('');
-    // --- DEVELOPMENT_ONLY_START ---
+    if (!loadSession()) {
+        sendMessage('');
+    }
+    
     setupDevInfoToggle();
-    // --- DEVELOPMENT_ONLY_END ---
 });
