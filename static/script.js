@@ -164,23 +164,28 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Add AI response to history
-        chatHistory.push({ role: 'model', content: response.coach_response });
-
+        // Always update the question index if the backend provides it.
         if (response.question_index !== undefined) {
             currentQuestionIndex = response.question_index;
         }
 
+        let fullCoachResponse = response.coach_response;
+
+        // Render the UI based on the action
         if (response.action === 'GREET_USER' && response.options) {
             const tutorMessageContainer = addMessage(response.coach_response, 'tutor');
             renderOptions(tutorMessageContainer, response.options, false);
         } else if (response.action === 'ASK_QUESTION' && response.question) {
+            // Combine the intro and the question for both UI and history
+            fullCoachResponse += `\n\n${response.question.question}`;
             const messageHtml = `<div class="message-bubble">${response.coach_response}</div><div class="message-bubble">${response.question.question}</div>`;
             const tutorMessageContainer = addMessage(messageHtml, 'tutor', true);
             renderOptions(tutorMessageContainer, response.question.options, true);
         } else if (response.action === 'EVALUATE_ANSWER' && response.options) {
             let feedbackHtml = `<div class="message-bubble">${response.coach_response}</div>`;
             if (response.correct_statement) {
+                // Also combine for history
+                fullCoachResponse += `\n\nCorrect Fact: ${response.correct_statement}`;
                 feedbackHtml += `<div class="message-bubble correct-statement"><strong>Correct Fact:</strong> ${response.correct_statement}</div>`;
             }
             const tutorMessageContainer = addMessage(feedbackHtml, 'tutor', true);
@@ -188,37 +193,59 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (response.action === 'END_QUIZ') {
             addMessage(response.coach_response, 'tutor');
             setInputState(true, "Quiz finished. Refresh to start again.");
-            clearSession();
+            clearSession(); // This also resets the index
         } else {
             addMessage(response.coach_response || "Sorry, something went wrong.", 'tutor');
         }
 
+        // Add the complete, accurate AI response to the history array
+        chatHistory.push({ 
+            role: 'model', 
+            content: fullCoachResponse, 
+            timestamp: new Date().toISOString() 
+        });
+
+        // Enable input unless the quiz is over
         if (response.action !== 'END_QUIZ') {
             setInputState(false);
         }
         
+        // Update debug info and save the final, correct state to localStorage
         updateDevelopmentInfo(response);
         saveSession();
     }
 
     async function sendMessage(messageText) {
+        // If the user sends a non-empty message, add it to the UI and the history.
         if (messageText) {
             addMessage(messageText, 'user');
-            chatHistory.push({ role: 'user', content: messageText });
+            chatHistory.push({ 
+                role: 'user', 
+                content: messageText, 
+                timestamp: new Date().toISOString() 
+            });
         }
         
         setInputState(true, "Coach is thinking...");
-        saveSession();
+        saveSession(); // Save state immediately
         
         try {
+            // The payload is always the current state of the history and index.
+            // An empty history array signals the backend to start the conversation.
+            const payload = {
+                chat_history: chatHistory,
+                current_question_index: currentQuestionIndex
+            };
+
+            // This handles the very first message to start the chat.
+            if (!messageText && chatHistory.length === 0) {
+                payload.chat_history = []; // Ensure it's an empty array for the initial call
+            }
+
             const res = await fetch('/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: messageText,
-                    current_question_index: currentQuestionIndex,
-                    chat_history: chatHistory.slice(0, -1) // Send history *before* the current message
-                }),
+                body: JSON.stringify(payload),
             });
 
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);

@@ -43,25 +43,32 @@ def chat():
     Handles all incoming chat messages from the user.
     This endpoint is now stateless, relying on the client to send the full context.
     """
-    # 1. Get state from the client request
     data = request.json
-    user_message = data.get("message")
+
+    # --- START DEBUG LOGGING ---
+    try:
+        # Construct the absolute path for the debug logs directory
+        debug_log_dir = os.path.join(project_root, "debug_logs")
+        # Create the directory if it doesn't exist
+        os.makedirs(debug_log_dir, exist_ok=True)
+        # Create a unique, timestamped filename
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")
+        filename = os.path.join(debug_log_dir, f"request_{timestamp}.json")
+        # Write the JSON data to the file
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=4)
+    except Exception as e:
+        # Print an error to the console if logging fails, but don't crash the app
+        print(f"--- Failed to log request: {e} ---")
+    # --- END DEBUG LOGGING ---
+
+    # 1. Get state from the client request
+    chat_history = data.get("chat_history", [])
     current_question_index = data.get("current_question_index", 0)
-    chat_history = data.get("chat_history", []) # Get history from client
 
-    # 2. Add the current user message to the history for processing
-    if user_message:
-        chat_history.append(
-            {
-                "role": "user",
-                "content": user_message,
-                "timestamp": datetime.now().isoformat(),
-            }
-        )
-    else:
-        # This handles the initial "hello" from the frontend
+    # 2. Check if this is the initial call
+    if not chat_history or (len(chat_history) == 1 and chat_history[0]["content"] == ""):
         print("Initial call from frontend to get greeting.")
-
 
     # 3. Load the full question bank
     try:
@@ -72,6 +79,7 @@ def chat():
 
     # 4. Delegate all cognitive tasks to the LLM
     try:
+        # The history from the client is now complete and can be used directly
         llm_decision = gemini_service.get_llm_decision(
             chat_history=chat_history,
             all_questions=all_questions,
@@ -83,7 +91,6 @@ def chat():
         return jsonify({"error": f"An error occurred with the AI service: {e}"}), 500
 
     # 5. Return the LLM's decision directly to the frontend
-    # The client is now responsible for maintaining its own state.
     return jsonify(llm_decision)
 
 
