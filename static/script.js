@@ -132,47 +132,35 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Action: GREET_USER -> Render "Let's Begin" button
-        if (response.action === 'GREET_USER' && response.options) {
-            const tutorMessageContainer = addMessage(response.coach_response, 'tutor');
-            renderOptions(tutorMessageContainer, response.options, false);
-            setInputState(false, "Type your answer or ask a question...");
-        } 
-        // Action: ASK_QUESTION -> Render the question and its options
-        else if (response.action === 'ASK_QUESTION' && response.question) {
-            const messageHtml = `
-                <div class="message-bubble">${response.coach_response}</div>
-                <div class="message-bubble">${response.question.question}</div>
+        // 1. Build the message HTML from the available data.
+        let messageHtml = '';
+        if (response.coach_response) {
+            messageHtml += `<div class="message-bubble">${response.coach_response}</div>`;
+        }
+        if (response.question && response.question.question) {
+            messageHtml += `<div class="message-bubble">${response.question.question}</div>`;
+        }
+        if (response.correct_statement) {
+            messageHtml += `
+                <div class="message-bubble correct-statement">
+                    <strong>Correct Fact:</strong> ${response.correct_statement}
+                </div>
             `;
-            const tutorMessageContainer = addMessage(messageHtml, 'tutor', true);
+        }
+
+        // 2. Add the combined message to the chat.
+        const tutorMessageContainer = addMessage(messageHtml, 'tutor', true);
+
+        // 3. Render buttons for question options or other actions.
+        if (response.question && response.question.options) {
             renderOptions(tutorMessageContainer, response.question.options, true);
-            setInputState(false, "Type your answer or ask a question...");
-        }
-        // Action: EVALUATE_ANSWER -> Render feedback and "Next Question" button
-        else if (response.action === 'EVALUATE_ANSWER' && response.options) {
-            let feedbackHtml = `<div class="message-bubble">${response.coach_response}</div>`;
-            // If the AI provides the correct statement, add it to the message.
-            if (response.correct_statement) {
-                feedbackHtml += `
-                    <div class="message-bubble correct-statement">
-                        <strong>Correct Fact:</strong> ${response.correct_statement}
-                    </div>
-                `;
-            }
-            const tutorMessageContainer = addMessage(feedbackHtml, 'tutor', true);
+        } else if (response.options) {
             renderOptions(tutorMessageContainer, response.options, false);
-            setInputState(false, "Type your answer or ask a question...");
         }
-        // Action: END_QUIZ -> Display final message
-        else if (response.action === 'END_QUIZ') {
-            addMessage(response.coach_response, 'tutor');
-            setInputState(false, "Quiz finished. Refresh to start again.");
-        }
-        // Fallback for any other case
-        else {
-            addMessage(response.coach_response || "Sorry, something went wrong.", 'tutor');
-            setInputState(false);
-        }
+
+        // 4. Set the input state. The user is always in control.
+        setInputState(false, "What would you like to do next?");
+
         // --- DEVELOPMENT_ONLY_START ---
         updateDevelopmentInfo(response);
         // --- DEVELOPMENT_ONLY_END ---
