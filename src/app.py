@@ -93,6 +93,24 @@ def chat():
         return jsonify({"error": f"An error occurred with the AI service: {e}"}), 500
 
     # 5. Return the LLM's decision directly to the frontend
+    # -----------Development code starts------------
+    try:
+        # Construct the absolute path for the debug logs directory
+        debug_log_dir = os.path.join(project_root, "debug_logs")
+        # Create the directory if it doesn't exist
+        os.makedirs(debug_log_dir, exist_ok=True)
+        
+        # Define the single JSON log file path
+        log_file_path = os.path.join(debug_log_dir, "llm_response_log.json")
+        
+        # Write the new data to the file, overwriting it
+        with open(log_file_path, "w") as f:
+            json.dump(llm_decision, f, indent=4)
+            
+    except Exception as e:
+        # Print an error to the console if logging fails, but don't crash the app
+        print(f"--- Failed to log LLM response: {e} ---")
+    # -----------Development code Ends------------
     return jsonify(llm_decision)
 
 

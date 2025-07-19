@@ -80,11 +80,6 @@ def get_llm_decision(
 
         llm_decision = json.loads(response.text)
 
-        # --- DEVELOPMENT_ONLY_START ---
-        # Add raw LLM response to the decision for UI display
-        llm_decision["_development_info"] = response.text
-        # --- DEVELOPMENT_ONLY_END ---
-
         return llm_decision
     except Exception as e:
         print(f"--- Gemini API Error: {e} ---")

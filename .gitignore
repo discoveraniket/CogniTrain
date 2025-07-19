@@ -21,4 +21,4 @@ Thumbs.db
 # Specific to this project (if any)
 basic.txt
 CogniTrain.code-workspace
-debug_logs/chat_log.json
+debug_logs

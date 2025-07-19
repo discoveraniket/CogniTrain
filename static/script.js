@@ -98,15 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateDevelopmentInfo(response) {
-        if (!response._development_info) return;
         const devContainer = document.getElementById('development-info-container');
         const rationaleEl = document.getElementById('dev-rationale');
         const studentModelEl = document.getElementById('dev-student-model');
-        const rawResponseEl = document.getElementById('dev-raw-response');
-        if (devContainer && rationaleEl && studentModelEl && rawResponseEl) {
+
+        if (devContainer && rationaleEl && studentModelEl) {
             rationaleEl.textContent = response.question_selection_rationale || 'N/A';
             studentModelEl.textContent = JSON.stringify(response.student_model_analysis, null, 2) || 'N/A';
-            rawResponseEl.textContent = response._development_info;
             devContainer.style.display = 'block';
         }
     }
