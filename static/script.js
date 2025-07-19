@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fullCoachResponse += `
 
 Answer: ${response.correct_statement}`;
-                feedbackHtml += `<div class="message-bubble correct-statement"><strong>Correct Fact:</strong> ${response.correct_statement}</div>`;
+                feedbackHtml += `<div class="message-bubble correct-statement"><strong>Answer:</strong> ${response.correct_statement}</div>`;
             }
             const tutorMessageContainer = addMessage(feedbackHtml, 'tutor', true);
             renderOptions(tutorMessageContainer, response.options, false);
