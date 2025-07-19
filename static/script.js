@@ -202,10 +202,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const tutorMessageContainer = addMessage(messageHtml, 'tutor', true);
             renderOptions(tutorMessageContainer, response.question.options, true);
         } else if (response.action === 'EVALUATE_ANSWER' && response.options) {
-            let feedbackHtml = `<div class="message-bubble">${response.coach_response}</div>`;
+            const correctnessClass = response.is_correct ? 'correct-answer' : 'incorrect-answer';
+            let feedbackHtml = `<div class="message-bubble ${correctnessClass}">${response.coach_response}</div>`;
             if (response.correct_statement) {
                 // Also combine for history
-                fullCoachResponse += `\n\nCorrect Fact: ${response.correct_statement}`;
+                fullCoachResponse += `
+
+Answer: ${response.correct_statement}`;
                 feedbackHtml += `<div class="message-bubble correct-statement"><strong>Correct Fact:</strong> ${response.correct_statement}</div>`;
             }
             const tutorMessageContainer = addMessage(feedbackHtml, 'tutor', true);

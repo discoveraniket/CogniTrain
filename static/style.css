@@ -367,3 +367,14 @@ body {
     text-decoration: underline;
 }
 
+.message-bubble.correct-answer {
+    background-color: #d4edda; /* Light green */
+    border-color: #c3e6cb;
+    color: #28a745; /* Green*/
+}
+
+.message-bubble.incorrect-answer {
+    background-color: #f8d7da; /* Light red */
+    border-color: #f5c6cb;
+    color: #dc3545; /* Red*/
+}
