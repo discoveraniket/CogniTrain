@@ -51,12 +51,14 @@ def chat():
         debug_log_dir = os.path.join(project_root, "debug_logs")
         # Create the directory if it doesn't exist
         os.makedirs(debug_log_dir, exist_ok=True)
-        # Create a unique, timestamped filename
-        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")
-        filename = os.path.join(debug_log_dir, f"request_{timestamp}.json")
-        # Write the JSON data to the file
-        with open(filename, "w") as f:
+        
+        # Define the single JSON log file path
+        log_file_path = os.path.join(debug_log_dir, "chat_log.json")
+        
+        # Write the new data to the file, overwriting it
+        with open(log_file_path, "w") as f:
             json.dump(data, f, indent=4)
+            
     except Exception as e:
         # Print an error to the console if logging fails, but don't crash the app
         print(f"--- Failed to log request: {e} ---")
