@@ -213,10 +213,6 @@ Answer: ${response.correct_statement}`;
             }
             const tutorMessageContainer = addMessage(feedbackHtml, 'tutor', true);
             renderOptions(tutorMessageContainer, response.options, false);
-        } else if (response.action === 'END_QUIZ') {
-            addMessage(response.coach_response, 'tutor');
-            setInputState(true, "Quiz finished. Refresh to start again.");
-            clearSession(); // This also resets the index
         } else {
             addMessage(response.coach_response || "Sorry, something went wrong.", 'tutor');
         }
@@ -228,10 +224,8 @@ Answer: ${response.correct_statement}`;
             timestamp: new Date().toISOString() 
         });
 
-        // Enable input unless the quiz is over
-        if (response.action !== 'END_QUIZ') {
-            setInputState(false);
-        }
+        // Enable input for the next turn
+        setInputState(false);
         
         // Update debug info and save the final, correct state to localStorage
         updateDevelopmentInfo(response);
