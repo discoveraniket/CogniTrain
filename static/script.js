@@ -104,9 +104,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (devContainer && rationaleEl && studentModelEl) {
             rationaleEl.textContent = response.question_selection_rationale || 'N/A';
-            studentModelEl.textContent = JSON.stringify(response.student_model_analysis, null, 2) || 'N/A';
+            if (response.student_model_analysis) {
+                const studentModel = response.student_model_analysis;
+                studentModelEl.textContent = JSON.stringify(studentModel, null, 2);
+                saveStudentModel(studentModel); // Save the new model
+            }
             devContainer.style.display = 'block';
         }
+    }
+
+    function saveStudentModel(studentModel) {
+        localStorage.setItem('cogniTrainStudentModel', JSON.stringify(studentModel));
+    }
+
+    function loadStudentModel() {
+        const savedModel = localStorage.getItem('cogniTrainStudentModel');
+        if (savedModel) {
+            const studentModel = JSON.parse(savedModel);
+            const studentModelEl = document.getElementById('dev-student-model');
+            if (studentModelEl) {
+                studentModelEl.textContent = JSON.stringify(studentModel, null, 2);
+                 document.getElementById('development-info-container').style.display = 'block';
+            }
+            return studentModel;
+        }
+        return null;
     }
 
     function scrollToBottom() {
@@ -277,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Start the conversation ---
+    loadStudentModel();
     if (!loadSession()) {
         sendMessage('');
     }
