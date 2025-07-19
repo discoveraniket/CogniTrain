@@ -64,22 +64,18 @@ def chat():
         print(f"--- Failed to log request: {e} ---")
     # --- END DEBUG LOGGING ---
 
-    # 1. Get state from the client request
+    # Get state from the client request
     chat_history = data.get("chat_history", [])
     current_question_index = data.get("current_question_index", 0)
 
-    # 2. Check if this is the initial call
-    if not chat_history or (len(chat_history) == 1 and chat_history[0]["content"] == ""):
-        print("Initial call from frontend to get greeting.")
-
-    # 3. Load the full question bank
+    # Load the full question bank
     try:
         mcq_file_path = os.path.join(current_dir, "english.json")
         all_questions = question_bank.load_questions(file_path=mcq_file_path)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         return jsonify({"error": f"Could not load question bank: {e}"}), 500
 
-    # 4. Delegate all cognitive tasks to the LLM
+    # Delegate all cognitive tasks to the LLM
     try:
         # The history from the client is now complete and can be used directly
         llm_decision = gemini_service.get_llm_decision(
@@ -92,7 +88,7 @@ def chat():
         print(f"Error calling Gemini service: {e}")
         return jsonify({"error": f"An error occurred with the AI service: {e}"}), 500
 
-    # 5. Return the LLM's decision directly to the frontend
+    # Return the LLM's decision directly to the frontend
     # -----------Development code starts------------
     try:
         # Construct the absolute path for the debug logs directory

@@ -67,13 +67,6 @@ def get_llm_decision(
         )
 
         # --- DEVELOPMENT_ONLY_START ---
-        # Print raw prompt being sent to LLM for debugging
-        # print(user_prompt)
-
-
-        # Print raw LLM response for debugging
-        # print("--- Gemini Service: Raw LLM Response (DEVELOPMENT_ONLY) ---")
-        # print(response.text)
         print(f"Total token count: {response.usage_metadata.total_token_count}")
         print("----------------------------------------------------------")
         # --- DEVELOPMENT_ONLY_END ---
