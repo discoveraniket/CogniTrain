@@ -29,6 +29,19 @@
                 <i class="fas fa-brain"></i>
                 <span>AI Cognitive Info</span>
             </button>
+
+            <div class="dropdown-container">
+                <button id="question-bank-toggle" class="sidebar-button">
+                    <i class="fas fa-database"></i>
+                    <span>Select Question Bank</span>
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                </button>
+                <div id="question-bank-dropdown" class="dropdown-menu">
+                    <a href="#" class="dropdown-item" data-bank="english.json">English Grammar</a>
+                    <a href="#" class="dropdown-item" data-bank="science.json">General Science</a>
+                    <a href="#" class="dropdown-item" data-bank="history.json">World History</a>
+                </div>
+            </div>
         </div>
     </div>
     <div id="sidebar-overlay" class="sidebar-overlay hidden"></div>
@@ -41,7 +54,7 @@
                 </button>
                 <div class="header-content">
                     <h2>CogniTrain</h2>
-                    <p>Your personal AI powered trainer for exam prep</p>
+                    <p>AI powered trainer for exam prep</p>
                 </div>
                 <div class="header-buttons">
                     <button id="info-button" class="info-button" aria-label="About">
@@ -113,8 +126,8 @@
         </div>
     </div>
 
-    <footer class="footer">
-        <p>Developed with <i class="fas fa-heart"></i> by Aniket Sarkar</p>
+        <footer class="footer">
+        <p>Developed with <i class="fas fa-heart"></i> by <a href="https://github.com/discoveraniket" target="_blank" rel="noopener noreferrer">Aniket Sarkar</a></p>
     </footer>
 
     <script src="/static/script.js"></script>

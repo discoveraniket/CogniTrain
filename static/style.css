@@ -64,6 +64,9 @@ body {
 
 
 .chat-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     background-color: var(--primary-color);
     color: var(--text-light);
     padding: 1.25rem;
@@ -259,6 +262,59 @@ body {
     font-size: 1.1rem;
     width: 20px;
     text-align: center;
+}
+
+.dropdown-container {
+    position: relative;
+    width: 100%;
+}
+
+#question-bank-toggle {
+    justify-content: space-between;
+    width: 100%;
+}
+
+.dropdown-icon {
+    transition: transform 0.3s ease;
+}
+
+.dropdown-container.open .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    display: none;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out, border 0.3s ease-out;
+    padding: 0;
+    border-width: 0;
+}
+
+.dropdown-menu.show {
+    display: flex;
+    max-height: 200px; /* Adjust as needed */
+    padding: 0.5rem;
+    border-width: 1px;
+    transition: max-height 0.4s ease-in, padding 0.4s ease-in, border 0.4s ease-in;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--text-dark);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #e9ecef;
 }
 
 .sidebar-overlay {
