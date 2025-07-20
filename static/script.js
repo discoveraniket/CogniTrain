@@ -102,13 +102,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const rationaleEl = document.getElementById('dev-rationale');
         const studentModelEl = document.getElementById('dev-student-model');
 
-        if (devContainer && rationaleEl && studentModelEl) {
-            rationaleEl.textContent = response.question_selection_rationale || 'N/A';
-            if (response.student_model_analysis) {
-                const studentModel = response.student_model_analysis;
-                studentModelEl.textContent = JSON.stringify(studentModel, null, 2);
-                saveStudentModel(studentModel); // Save the new model
-            }
+        if (!devContainer || !rationaleEl || !studentModelEl) return;
+
+        const hasRationale = !!response.question_selection_rationale;
+        const hasModel = !!response.student_model_analysis;
+
+        if (hasRationale) {
+            rationaleEl.textContent = response.question_selection_rationale;
+        }
+        else {
+            rationaleEl.textContent = "N/A"
+        }
+
+        if (hasModel) {
+            const studentModel = response.student_model_analysis;
+            studentModelEl.textContent = JSON.stringify(studentModel, null, 2);
+            saveStudentModel(studentModel); // Save the new model
+        }
+
+        // Show the container only if new info was provided in this response.
+        if (hasRationale || hasModel) {
             devContainer.style.display = 'block';
         }
     }
@@ -184,51 +197,59 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Always update the question index if the backend provides it.
-        if (response.question_index !== undefined) {
+        // Update question index if present
+        if (response.question_index !== null && response.question_index !== undefined) {
             currentQuestionIndex = response.question_index;
         }
 
-        let fullCoachResponse = response.coach_response;
+        let messageHtml = '';
 
-        // Render the UI based on the action
-        if (response.action === 'GREET_USER' && response.options) {
-            const tutorMessageContainer = addMessage(response.coach_response, 'tutor');
-            renderOptions(tutorMessageContainer, response.options, false);
-        } else if (response.action === 'ASK_QUESTION' && response.question) {
-            // Combine the intro and the question for both UI and history
-            fullCoachResponse += `\n\n${response.question.question}`;
-            const messageHtml = `<div class="message-bubble">${response.coach_response}</div><div class="message-bubble">${response.question.question}</div>`;
-            const tutorMessageContainer = addMessage(messageHtml, 'tutor', true);
-            renderOptions(tutorMessageContainer, response.question.options, true);
-        } else if (response.action === 'EVALUATE_ANSWER' && response.options) {
-            const correctnessClass = response.is_correct ? 'correct-answer' : 'incorrect-answer';
-            let feedbackHtml = `<div class="message-bubble ${correctnessClass}">${response.coach_response}</div>`;
-            if (response.correct_statement) {
-                // Also combine for history
-                fullCoachResponse += `
-
-Answer: ${response.correct_statement}`;
-                feedbackHtml += `<div class="message-bubble correct-statement"><strong>Answer:</strong> ${response.correct_statement}</div>`;
-            }
-            const tutorMessageContainer = addMessage(feedbackHtml, 'tutor', true);
-            renderOptions(tutorMessageContainer, response.options, false);
-        } else {
-            addMessage(response.coach_response || "Sorry, something went wrong.", 'tutor');
+        // 1. Main AI response (feedback, greeting, etc.)
+        if (response.ai_response) {
+            const correctnessClass = (response.is_correct !== null && response.is_correct !== undefined)
+                ? (response.is_correct ? 'correct-answer' : 'incorrect-answer')
+                : '';
+            messageHtml += `<div class="message-bubble ${correctnessClass}">${response.ai_response}</div>`;
         }
 
-        // Add the complete, accurate AI response to the history array
-        chatHistory.push({ 
-            role: 'model', 
-            content: fullCoachResponse, 
-            timestamp: new Date().toISOString() 
+        // 2. Question text
+        if (response.question) {
+            messageHtml += `<div class="message-bubble">${response.question}</div>`;
+        }
+
+        // 3. Correct answer statement
+        if (response.correct_answer) {
+            messageHtml += `<div class="message-bubble correct-statement"><strong>Answer:</strong> ${response.correct_answer}</div>`;
+        }
+
+        // Render the message bubbles if there's any HTML to render
+        let tutorMessageContainer;
+        if (messageHtml) {
+            tutorMessageContainer = addMessage(messageHtml, 'tutor', true);
+        }
+
+        // 4. Options
+        if (response.options) {
+            const isQuestion = !!response.question;
+            // Append options to the last message container, or create a new one if none exists
+            const targetContainer = tutorMessageContainer || addMessage('', 'tutor');
+            renderOptions(targetContainer, response.options, isQuestion);
+        }
+
+        // Add the full response object to history for the backend
+        chatHistory.push({
+            role: 'model',
+            content: JSON.stringify(response),
+            timestamp: new Date().toISOString()
         });
 
-        // Enable input for the next turn
-        setInputState(false);
-        
-        // Update debug info and save the final, correct state to localStorage
+        // Update dev info panel
         updateDevelopmentInfo(response);
+
+        // Enable user input for the next turn
+        setInputState(false);
+
+        // Save the session state
         saveSession();
     }
 

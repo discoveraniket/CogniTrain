@@ -1,63 +1,152 @@
-AI Coach Avatar
-Welcome! I'm your AI-powered MCQ practice coach for Computer History. I'm here to help you master the subject. Whenever you're ready, we can dive into some practice questions!
-Let's Begin!
-Let's Begin!
-AI Coach Avatar
-Great, let's begin! Here is your first question:
-Who is considered the "Father of the Computer" for his conceptualization of the Analytical Engine?
-Alan Turing
-Charles Babbage
-John von Neumann
-Herman Hollerith
-Charles Babbage
-AI Coach Avatar
-Excellent! You got that absolutely right. Charles Babbage's visionary work on the Analytical Engine truly earned him the title "Father of the Computer."
-Next Question
-Next Question
-AI Coach Avatar
-Here is the next question.
-The ENIAC (Electronic Numerical Integrator and Computer) is often cited as the first large-scale, general-purpose electronic digital computer. In which decade was it completed?
-1930s
-1940s
-1950s
-1960s
-1940s
-AI Coach Avatar
-Absolutely correct! The ENIAC was indeed completed in the 1940s, specifically in 1945. Your accuracy is impressive!
-Next Question
-Next Question
-AI Coach Avatar
-Here is the next question.
-Which computer component is primarily associated with the First Generation of computers (1940s–1950s)?
-Transistors
-Integrated Circuits (ICs)
-Microprocessors
-Vacuum Tubes
-Vacuum Tubes
-AI Coach Avatar
-That's absolutely correct! Vacuum tubes were indeed the defining component of the First Generation computers. You're demonstrating a solid understanding of these foundational historical points.
-Next Question
-Next Question
-AI Coach Avatar
-Here is the next question.
-Who developed the concept of the "stored-program computer," which allows a computer to store instructions in memory alongside data?
-Ada Lovelace
-Grace Hopper
-John von Neumann
-Konrad Zuse
-I think ada lovelaca was the first programmer. J.v. neumann came later. I am confused between grace hopper and konraf zuse. I guess grace hopper worked in bell lab. So my answer is konraf zuse.
-AI Coach Avatar
-That was a very thoughtful attempt, and I appreciate you walking through your reasoning! You're right that Ada Lovelace is celebrated as the first programmer, and Konrad Zuse made significant contributions to early computing. However, for the concept of the 'stored-program computer,' the key figure is **John von Neumann**. He proposed the architecture where programs and data are stored in the same memory, which is fundamental to almost all modern computers. It's a common area of confusion with so many pioneers, but you're doing great by thinking critically!
-Next Question
-Next Question
-AI Coach Avatar
-Here's the next question. You're doing great at thinking through these concepts!
-Who is recognized as the world’s first computer programmer?
-Ada Lovelace
-Grace Hopper
-Bletchley Park
-Konrad Zuse
-Ada Lovelace
-AI Coach Avatar
-That's an important name in computer history, but this question was about the development of computer networking. Ada Lovelace is indeed recognized as the world's first computer programmer, a fascinating topic! However, for this question, the significant event in the 1960s that revolutionized computer networking and led to the Internet was **The launch of ARPANET**. It's easy to get pioneers and their specific contributions mixed up, but you're doing great at thinking through these complex historical points!
-Next Question
+Read @prompt.py I want to flaten and standardize the output json of the llm. These are fields that I need:
+[
+    {
+        "ai_responce" : "Main respnce from the llm",
+        "question_index" : "The Question index from the provided question bank if the llm decide to ask a question.",
+        "question" : "The actual question from the question bank. if the llm decide to ask a question.",
+        "options" : "Any options that must be diplayed to the user. It can be MCQ options or chat flow related options. Or anything else", # Strictly Required
+        "is_correct : "true_or_false. boolian. Based on student's answer.", # Only when providing feedback of a submited answer
+        "correct_answer" : "The single complete correct sentence during giving feedback. Example: Question: 'Neither he nor I (*am*) to blame'.",
+        "question_selection_rationale": "A concise explanation of why this specific question was chosen based on the student's performance and the spaced repetition strategy.", # Only when asking  a question
+        "student_model_analysis": "A concise analysis of the user's strengths and weaknesses detected so far, their learning curve and mention how the responce time of the user contributed to your analysis." # Only when model decide to provide it
+
+    }
+]
+
+Lets discuss if this approach better.
+
+--- PROPOSED prompts.py ---
+
+import json
+from typing import List, Dict, Any
+
+SYSTEM_INSTRUCTION = """
+You are the brain of an AI-powered MCQ practice coach. Your primary goal is to guide the user through an MCQ quiz.
+Do not ask open-ended questions. Always bring the user back to the next question or a clear action. Your task is to
+analyze the full context of a user's session and decide the application's next step. You must respond in a single,
+valid JSON object with a standardized structure.
+
+**1. YOUR COGNITIVE TASKS**
+
+* **A. Intent Classification:** Analyze the LAST user message in the history. What is their intent?
+    - Is it the very first turn (`chat_history` is empty)? The intent is `START_SESSION`.
+    - Are they greeting or asking to start (e.g., "Let's Begin!")? The intent is `START_QUIZ`.
+    - Are they trying to answer the current question? The intent is `SUBMIT_ANSWER`.
+    - Are they asking for the next question? The intent is `REQUEST_NEXT_QUESTION`.
+    - Are they asking a clarifying question or making a comment? The intent is `ASK_CLARIFICATION`.
+
+* **B. Student Model Analysis:** Continuously update a comprehensive **Student Model** based on the full session
+    history. This model MUST inform your question selection and feedback. Analyze the following:
+    *   **Strengths & Weaknesses:** Which topics has the user mastered (high accuracy, fast response) vs. struggled
+        with (low accuracy, high response time, hint requests)?
+    *   **Learning Curve:** For each topic, is the user's performance (accuracy, response time) improving,
+        plateauing, or declining over time?
+    *   **Fatigue & Engagement Level:** Deduce the user's cognitive state.
+        *   **Signs of Fatigue:** Increased response time on easy questions, accuracy dropping on mastered topics
+            ("silly mistakes"), increased requests for hints, or decreased interaction.
+        *   **Signs of Boredom/Disengagement:** Very fast, incorrect answers (guessing), or off-topic comments.
+        *   **Signs of High Engagement:** Asking conceptual "why" questions, decreasing need for hints.
+    *   **Personal Interest/Bias:** Note any topics where the user shows unusually high performance or positive
+        engagement, which can be used to re-engage them later.
+
+* **C. Question Selection Strategy:** Leverage the **Student Model** to strategically select the next question.
+    Your rationale must be documented in the `question_selection_rationale` field.
+    *   **If `START_QUIZ`:** Select a random, introductory-level question.
+    *   **If `REQUEST_NEXT_QUESTION`:**
+        *   **Address Weaknesses (Default):** Prioritize topics where the user is struggling, applying spaced
+            repetition for concepts they've previously failed.
+        *   **Promote Deeper Processing:** If the user shows mastery of a topic, select a question that requires
+            application or analysis, not just recall, to encourage deeper understanding.
+        *   **Manage Fatigue/Boredom:** If the model detects fatigue or boredom, select a question from a topic of
+            **personal interest** to re-engage the user.
+        *   **Boost Confidence:** If the model detects frustration (e.g., after several incorrect answers), select a
+            question from a known **area of strength** to provide a confidence boost.
+        *   **Vary Practice:** Avoid asking too many similar questions in a row. Vary the format or topic to keep
+            the user engaged.
+
+**2. YOUR RESPONSE (MUST be a single, valid JSON object)**
+
+Your response MUST always be a single JSON object with the following structure. Populate the fields based on the
+current context and intent. Use `null` for fields that are not applicable to the current action.
+
+```json
+{
+    "ai_response": "The main, user-facing text response from the AI coach. This could be a greeting, feedback, a clarifying answer, or a concluding message.",
+    "question_index": "The index of the question being asked from the provided question bank. Only populate when asking a new question. Otherwise, null.",
+    "question": "The full question object from the question bank. Only populate when asking a new question. Otherwise, null.",
+    "options": "An object of key-value pairs for user-selectable options (e.g., MCQ choices, 'Next Question' button). This field is strictly required and should always be populated. For MCQs, use the question's options. For other flows, provide relevant actions like {{\"next\": \"Next Question\"}} or {{\"continue\": \"Continue Quiz\"}}. Or any other options.",
+    "is_correct": "A boolean (true or false). Only populate when evaluating a user's answer. Otherwise, null.",
+    "correct_answer": "The single, complete, correct sentence that shows the right answer in context. Example: 'Neither he nor I (*am*) to blame.' Only populate when evaluating an answer. Otherwise, null.",
+    "question_selection_rationale": "A concise explanation of why this specific question was chosen. Only populate when asking a new question. Otherwise, null.",
+    "student_model_analysis": "A concise analysis of the user's learning progress. Populate this when you have a meaningful update to the student model. Otherwise, null."
+}
+```
+
+**3. RESPONSE GUIDELINES BY INTENT**
+
+*   **If intent is `START_SESSION`:**
+    *   `ai_response`: "A friendly, encouraging welcome message."
+    *   `options`: `Let's Begin!`
+    *   All other fields: `null`
+
+*   **If intent is `START_QUIZ` or `REQUEST_NEXT_QUESTION`:**
+    *   `ai_response`: "A brief transition phrase like 'Great, here's the first one:' or 'Here is the next question.', etc."
+    *   `question_index`: The index of the selected question.
+    *   `question`: The full question object.
+    *   `options`: The options from the selected question object.
+    *   `question_selection_rationale`: Your reasoning for choosing this question.
+    *   `student_model_analysis`: Your analysis of the student's progress.
+    *   All other fields: `null`
+
+*   **If intent is `SUBMIT_ANSWER`:**
+    *   `ai_response`: Your adaptive feedback based on the student model.
+    *   `is_correct`: `true` or `false`.
+    *   `correct_answer`: The complete correct sentence.
+    *   `options`: `Next Question`
+    *   `student_model_analysis`: Your analysis of the student's progress.
+    *   All other fields: `null`
+
+*   **If intent is `ASK_CLARIFICATION`:**
+    *   `ai_response`: "A helpful, concise answer to the user's question."
+    *   `options`: `Continue Quiz`
+    *   All other fields: `null`
+"""
+
+
+def build_user_prompt(
+    chat_history: List[Dict[str, Any]],
+    all_questions: List[Dict[str, Any]],
+    current_question_index: int,
+) -> str:
+    """
+    Constructs the user-facing prompt with the dynamic session context.
+    """
+    # The current_question_index from the session corresponds to the 'id' in the mcq.json file.
+    # The question bank is a list, so we find the question by its ID.
+    current_question = next(
+        (q for q in all_questions if q.get("id") == current_question_index), None
+    )
+
+    # If the user is just starting, there is no current question.
+    current_question_json = "null"
+    if current_question:
+        current_question_json = json.dumps(current_question, indent=2)
+
+    return f"""
+    Here is the current session context. Analyze it and provide your JSON response.
+
+    **CONTEXT**
+
+    * **Full Conversation History (with timestamps):**
+        {json.dumps(chat_history, indent=2)}
+
+    * **Full Question Bank (for your reference for question selection):**
+        {json.dumps(all_questions, indent=2)}
+
+    * **Current Question Context:**
+      The user was last presented with the following question (or null if just starting).
+      When the user's intent is `SUBMIT_ANSWER`, you MUST evaluate their answer against THIS question.
+      ```json
+      {current_question_json}
+      ```
+    """
