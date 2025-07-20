@@ -13,17 +13,37 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>Hello</h3>
+            <button id="sidebar-close-button" class="sidebar-close-button" aria-label="Close Menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="sidebar-content">
+            <button id="start-over-button" class="sidebar-button">
+                <i class="fas fa-redo"></i>
+                <span>Start Over</span>
+            </button>
+            <button id="ai-info-button" class="sidebar-button">
+                <i class="fas fa-brain"></i>
+                <span>AI Cognitive Info</span>
+            </button>
+        </div>
+    </div>
+    <div id="sidebar-overlay" class="sidebar-overlay hidden"></div>
+
     <div class="main-container">
         <div class="chat-container">
             <div class="chat-header">
+                <button id="sidebar-toggle-button" class="info-button" aria-label="Open Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <div class="header-content">
-                    <h2>AI Practice Coach</h2>
-                    <p>Your personal tutor for exam prep</p>
+                    <h2>CogniTrain</h2>
+                    <p>Your personal AI powered trainer for exam prep</p>
                 </div>
                 <div class="header-buttons">
-                    <button id="start-over-button" class="info-button" aria-label="Start Over">
-                        <i class="fas fa-redo"></i>
-                    </button>
                     <button id="info-button" class="info-button" aria-label="About">
                         <i class="fas fa-info-circle"></i>
                     </button>
@@ -40,30 +60,11 @@
             </form>
         </div>
 
-        <!-- DEVELOPMENT_ONLY: LLM Debug Info -->
-        <div class="development-info-container minimized" id="development-info-container">
-            <div class="dev-info-header">
-                <h3>AI congnitive Info</h3>
-                <span class="dev-info-toggle" id="dev-info-toggle">-</span>
-            </div>
-            <div class="dev-info-content" id="dev-info-content">
-                <div class="dev-info-section">
-                    <h4>Question Selection Rationale</h4>
-                    <p id="dev-rationale"></p>
-                </div>
-                <div class="dev-info-section">
-                    <h4>User Model Analysis</h4>
-                    <pre id="dev-student-model"></pre>
-                </div>
-            </div>
-        </div>
-        <!-- END DEVELOPMENT_ONLY -->
-
     <!-- HTML Templates for Messages -->
     <template id="tutor-message-template">
         <div class="chat-message tutor">
             <div class="avatar">
-                <img src="/static/AI.jpg" alt="AI Coach Avatar">
+                <img src="/static/AI.jpg" alt="AI Avatar">
             </div>
             <div class="message-content"></div>
         </div>
@@ -82,7 +83,7 @@
                 <i class="fas fa-times"></i>
             </button>
             <h3>About CogniTrain</h3>
-            <p>This AI-powered practice coach was created by:</p>
+            <p>This AI-powered app was created by:</p>
             <p><strong>Aniket Sarkar</strong></p>
             <div class="modal-links">
                 <a href="https://github.com/discoveraniket/CogniTrain?tab=readme-ov-file#-cognitrain-ai-powered-mcq-practice-coach" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
@@ -91,6 +92,30 @@
             </div>
         </div>
     </div>
+
+    <!-- AI Info Modal -->
+    <div id="ai-info-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-ai-info-modal-button" class="modal-close-button" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3>AI Cognitive Info</h3>
+            <div class="ai-info-modal-content">
+                <div class="dev-info-section">
+                    <h4>Question Selection Rationale</h4>
+                    <p id="dev-rationale">No generated yet.</p>
+                </div>
+                <div class="dev-info-section">
+                    <h4>Student's Psychometric Analysis</h4>
+                    <pre id="dev-student-model">Not generated yet.</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Developed with <i class="fas fa-heart"></i> by Aniket Sarkar</p>
+    </footer>
 
     <script src="/static/script.js"></script>
 </body>

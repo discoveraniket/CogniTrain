@@ -5,11 +5,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorMessageTemplate = document.getElementById('tutor-message-template');
     const userMessageTemplate = document.getElementById('user-message-template');
     
+    // --- Sidebar Elements ---
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggleButton = document.getElementById('sidebar-toggle-button');
+    const sidebarCloseButton = document.getElementById('sidebar-close-button');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
     // --- About Modal Elements ---
     const infoButton = document.getElementById('info-button');
     const aboutModal = document.getElementById('about-modal');
     const closeModalButton = document.getElementById('close-modal-button');
     const startOverButton = document.getElementById('start-over-button');
+
+    // --- AI Info Modal Elements ---
+    const aiInfoButton = document.getElementById('ai-info-button');
+    const aiInfoModal = document.getElementById('ai-info-modal');
+    const closeAiInfoModalButton = document.getElementById('close-ai-info-modal-button');
 
     // --- Client-side State ---
     let currentQuestionIndex = 0;
@@ -56,6 +67,25 @@ document.addEventListener('DOMContentLoaded', () => {
         chatHistory = [];
     }
 
+    // --- Sidebar Logic ---
+    function openSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.add('open');
+        sidebarOverlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.add('hidden');
+    }
+
+    if (sidebarToggleButton && sidebarCloseButton && sidebarOverlay) {
+        sidebarToggleButton.addEventListener('click', openSidebar);
+        sidebarCloseButton.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+    }
+
     // --- About Modal Logic ---
     if (infoButton && aboutModal && closeModalButton) {
         infoButton.addEventListener('click', () => {
@@ -71,6 +101,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- AI Info Modal Logic ---
+    if (aiInfoButton && aiInfoModal && closeAiInfoModalButton) {
+        aiInfoButton.addEventListener('click', () => {
+            closeSidebar(); // Close the sidebar first
+            aiInfoModal.classList.remove('hidden');
+        });
+        closeAiInfoModalButton.addEventListener('click', () => {
+            aiInfoModal.classList.add('hidden');
+        });
+        aiInfoModal.addEventListener('click', (e) => {
+            if (e.target === aiInfoModal) {
+                aiInfoModal.classList.add('hidden');
+            }
+        });
+    }
+
     // --- Start Over Logic ---
     if (startOverButton) {
         startOverButton.addEventListener('click', () => {
@@ -78,31 +124,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearSession();
                 chatBox.innerHTML = ''; // Visually clear the chat
                 sendMessage(''); // Start a new conversation
+                closeSidebar(); // Close sidebar after action
             }
         });
     }
 
     // --- Core Functions ---
-    function setupDevInfoToggle() {
-        const devContainer = document.getElementById('development-info-container');
-        const toggle = document.getElementById('dev-info-toggle');
-        if (devContainer && toggle) {
-            devContainer.classList.add('minimized');
-            toggle.textContent = '+';
-            toggle.addEventListener('click', () => {
-                const isMinimized = devContainer.classList.contains('minimized');
-                devContainer.classList.toggle('minimized');
-                toggle.textContent = isMinimized ? '-' : '+';
-            });
-        }
-    }
-
     function updateDevelopmentInfo(response) {
-        const devContainer = document.getElementById('development-info-container');
         const rationaleEl = document.getElementById('dev-rationale');
         const studentModelEl = document.getElementById('dev-student-model');
 
-        if (!devContainer || !rationaleEl || !studentModelEl) return;
+        if (!rationaleEl || !studentModelEl) return;
 
         const hasRationale = !!response.question_selection_rationale;
         const hasModel = !!response.student_model_analysis;
@@ -119,11 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
             studentModelEl.textContent = JSON.stringify(studentModel, null, 2);
             saveStudentModel(studentModel); // Save the new model
         }
-
-        // Show the container only if new info was provided in this response.
-        if (hasRationale || hasModel) {
-            devContainer.style.display = 'block';
-        }
     }
 
     function saveStudentModel(studentModel) {
@@ -137,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const studentModelEl = document.getElementById('dev-student-model');
             if (studentModelEl) {
                 studentModelEl.textContent = JSON.stringify(studentModel, null, 2);
-                 document.getElementById('development-info-container').style.display = 'block';
             }
             return studentModel;
         }
@@ -264,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        setInputState(true, "Coach is thinking...");
+        setInputState(true, "CogniTrain is thinking...");
         saveSession(); // Save state immediately
         
         try {

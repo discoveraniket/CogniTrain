@@ -6,6 +6,7 @@
     --text-dark: #343a40;
     --text-light: #ffffff;
     --border-color: #dee2e6;
+    --sidebar-width: 280px;
 }
 
 * {
@@ -16,6 +17,7 @@
 
 html, body {
     height: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -23,14 +25,18 @@ body {
     background-color: var(--page-bg);
     color: var(--text-dark);
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Change to column for footer */
+    align-items: center; /* Center main content */
     padding: 0; /* Remove padding for full screen experience */
-    overflow-y: auto; /* Allow body to scroll */
 }
 
 .main-container {
     width: 100%;
     max-width: 700px;
+    flex-grow: 1; /* Allow main container to grow */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .chat-container {
@@ -47,7 +53,7 @@ body {
 /* Add media query for larger screens to restore padding and radius */
 @media (min-width: 700px) {
     body {
-        padding: 1rem;
+        padding-top: 1rem; /* Add padding top */
     }
     .chat-container {
         height: 85vh;
@@ -63,6 +69,9 @@ body {
     padding: 1.25rem;
     text-align: center;
     flex-shrink: 0; /* Prevent header from shrinking */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .chat-header h2 { margin: 0; font-size: 1.5rem; font-weight: 600; }
@@ -172,62 +181,114 @@ body {
 
 @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
-/* --- DEVELOPMENT_ONLY_START --- */
-.development-info-container {
-    background-color: #1e1e1e;
-    color: #d4d4d4;
-    border-radius: 8px;
-    margin: 20px 0;
-    font-family: 'SF Mono', 'Consolas', 'Menlo', monospace;
-    font-size: 14px;
-    overflow: hidden;
-    border: 1px solid #333;
+/* --- Sidebar Styles --- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--sidebar-width);
+    background-color: #ffffff;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
 }
 
-.development-info-container.minimized {
-    max-height: 45px; 
-    transition: max-height 0.3s ease-out;
+.sidebar.open {
+    transform: translateX(0);
 }
 
-.development-info-container.minimized .dev-info-content {
-    display: none;
-}
-
-.development-info-container.minimized .dev-info-toggle::before {
-    content: '+';
-}
-
-.dev-info-header {
-    background-color: #333;
-    padding: 10px 15px;
+.sidebar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    cursor: pointer;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
 
-.dev-info-header h3 {
+.sidebar-header h3 {
     margin: 0;
-    font-size: 16px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.sidebar-close-button {
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    cursor: pointer;
+    color: var(--text-dark);
+    opacity: 0.7;
+}
+.sidebar-close-button:hover { opacity: 1; }
+
+.sidebar-content {
+    padding: 1rem;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.sidebar-button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
     font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s, border-color 0.2s;
 }
 
-.dev-info-toggle {
-    font-size: 20px;
-    font-weight: bold;
+.sidebar-button:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
 }
 
-.dev-info-toggle::before {
-    content: '-';
+.sidebar-button i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
 }
 
-.dev-info-content {
-    padding: 15px;
-    display: block;
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+/* --- DEVELOPMENT_ONLY_START --- */
+/* Styles for the AI Cognitive Info Modal */
+.ai-info-modal-content {
+    text-align: left;
+    margin-top: 1.5rem;
 }
 
 .dev-info-section {
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
 }
 
 .dev-info-section:last-child {
@@ -235,12 +296,13 @@ body {
 }
 
 .dev-info-section h4 {
-    color: #9cdcfe;
+    color: var(--text-dark);
     margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 14px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 5px;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
 }
 
 .dev-info-section p,
@@ -248,21 +310,20 @@ body {
     margin: 0;
     white-space: pre-wrap;
     word-wrap: break-word;
-    background-color: #252526;
-    padding: 10px;
-    border-radius: 4px;
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Consolas', 'Menlo', monospace;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    max-height: 200px; /* Limit height and make it scrollable */
+    overflow-y: auto;
 }
 /* --- DEVELOPMENT_ONLY_END --- */
 
 /* --- About Modal Styles --- */
-.chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .header-content {
-    text-align: left;
+    text-align: center;
     flex-grow: 1;
 }
 
@@ -312,7 +373,7 @@ body {
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     max-width: 90%;
-    width: 400px;
+    width: 550px;
     text-align: center;
     position: relative;
     transform: scale(1);
@@ -377,4 +438,18 @@ body {
     background-color: #f8d7da; /* Light red */
     border-color: #f5c6cb;
     color: #dc3545; /* Red*/
+}
+
+/* --- Footer Styles --- */
+.footer {
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6c757d;
+    flex-shrink: 0; /* Prevent footer from shrinking */
+}
+
+.footer .fa-heart {
+    color: #e44d26;
 }
