@@ -97,6 +97,24 @@ document.addEventListener('DOMContentLoaded', () => {
             questionBankDropdown.classList.toggle('show');
             questionBankToggle.parentElement.classList.toggle('open');
         });
+
+        questionBankDropdown.addEventListener('click', (e) => {
+            if (e.target.classList.contains('dropdown-item')) {
+                e.preventDefault();
+                const selectedBank = e.target.dataset.bank;
+                if (selectedBank) {
+                    localStorage.setItem('selectedQuestionBank', selectedBank);
+                    
+                    // Restart the chat
+                    if (confirm('Switching the question bank will start a new session. Continue?')) {
+                        clearSession();
+                        chatBox.innerHTML = '';
+                        sendMessage(''); // Start a new conversation with the new bank
+                        closeSidebar();
+                    }
+                }
+            }
+        });
     }
 
     // --- About Modal Logic ---
@@ -309,9 +327,11 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // The payload is always the current state of the history and index.
             // An empty history array signals the backend to start the conversation.
+            const selectedBank = localStorage.getItem('selectedQuestionBank') || 'english.json';
             const payload = {
                 chat_history: chatHistory,
-                current_question_index: currentQuestionIndex
+                current_question_index: currentQuestionIndex,
+                question_bank: selectedBank
             };
 
             // This handles the very first message to start the chat.

@@ -80,10 +80,17 @@ def chat():
     # Get state from the client request
     chat_history = data.get("chat_history", [])
     current_question_index = data.get("current_question_index", 0)
+    question_bank_file = data.get("question_bank", "english.json") # Default to english.json
 
     # Load the full question bank
     try:
-        mcq_file_path = os.path.join(project_root, "question_banks/english.json")
+        # Security check: Ensure the file name is simple and does not contain path traversal characters.
+        if ".." in question_bank_file or "/" in question_bank_file:
+            return jsonify({"error": "Invalid question bank file name."}), 400
+            
+        question_banks_dir = os.path.join(project_root, "question_banks")
+        mcq_file_path = os.path.join(question_banks_dir, question_bank_file)
+        
         all_questions = question_bank.load_questions(file_path=mcq_file_path)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         return jsonify({"error": f"Could not load question bank: {e}"}), 500

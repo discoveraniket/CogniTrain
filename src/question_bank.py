@@ -76,7 +76,11 @@ def get_available_banks() -> List[Dict[str, str]]:
 if __name__ == "__main__":
     print("Attempting to load questions from 'mcq.json'...")
     try:
-        all_questions = load_questions()
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.abspath(os.path.join(current_dir, ".."))
+        question_banks_dir = os.path.join(project_root, "question_banks")
+        mcq_file_path = os.path.join(question_banks_dir, "english.json")
+        all_questions = load_questions(mcq_file_path)
         if all_questions:
             print(f"Successfully loaded {len(all_questions)} questions.")
             print("\n--- First Question Sample ---")
