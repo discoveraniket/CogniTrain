@@ -37,6 +37,19 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/question-banks", methods=["GET"])
+def get_question_banks():
+    """
+    Returns a list of available question banks.
+    """
+    try:
+        banks_data = question_bank.get_available_banks()
+        return jsonify(banks_data)
+    except Exception as e:
+        print(f"Error getting question banks: {e}")
+        return jsonify({"error": "Could not retrieve question banks"}), 500
+
+
 @app.route("/chat", methods=["POST"])
 def chat():
     """

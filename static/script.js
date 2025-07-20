@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiInfoModal = document.getElementById('ai-info-modal');
     const closeAiInfoModalButton = document.getElementById('close-ai-info-modal-button');
 
+    // --- Question Bank Elements ---
+    const questionBankToggle = document.getElementById('question-bank-toggle');
+    const questionBankDropdown = document.getElementById('question-bank-dropdown');
+
     // --- Client-side State ---
     let currentQuestionIndex = 0;
     let chatHistory = []; // Holds the structured chat history for the backend
@@ -84,6 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebarToggleButton.addEventListener('click', openSidebar);
         sidebarCloseButton.addEventListener('click', closeSidebar);
         sidebarOverlay.addEventListener('click', closeSidebar);
+    }
+
+    // --- Question Bank Logic ---
+    if (questionBankToggle && questionBankDropdown) {
+        questionBankToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the click from closing the sidebar immediately
+            questionBankDropdown.classList.toggle('show');
+            questionBankToggle.parentElement.classList.toggle('open');
+        });
     }
 
     // --- About Modal Logic ---
@@ -348,5 +361,34 @@ document.addEventListener('DOMContentLoaded', () => {
         sendMessage('');
     }
     
+    populateQuestionBanks();
     setupDevInfoToggle();
 });
+
+function populateQuestionBanks() {
+    const questionBankDropdown = document.getElementById('question-bank-dropdown');
+    if (!questionBankDropdown) return;
+
+    fetch('/question-banks')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load question banks');
+            }
+            return response.json();
+        })
+        .then(banks => {
+            questionBankDropdown.innerHTML = ''; // Clear existing options
+            banks.forEach(bank => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'dropdown-item';
+                link.textContent = bank.name;
+                link.dataset.bank = bank.file;
+                questionBankDropdown.appendChild(link);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching question banks:', error);
+            questionBankDropdown.innerHTML = '<a href="#" class="dropdown-item">Error loading banks</a>';
+        });
+}

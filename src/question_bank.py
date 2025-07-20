@@ -1,4 +1,5 @@
 import json
+import os
 from typing import List, Dict, Any, Union
 
 # Define a type alias for a single question, which is a dictionary.
@@ -36,6 +37,38 @@ def load_questions(file_path: str = "mcq.json") -> List[Question]:
     except json.JSONDecodeError:
         print(f"Error: The file at {file_path} is not a valid JSON file.")
         raise
+
+
+def get_available_banks() -> List[Dict[str, str]]:
+    """
+    Scans the 'question_banks' directory and returns a list of available JSON files.
+
+    Returns:
+        A list of dictionaries, where each dictionary contains the 'name' and 'file'
+        of a question bank. Returns an empty list if the directory is not found.
+    """
+    try:
+        # Determine the project root directory from the current file's location
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.abspath(os.path.join(current_dir, ".."))
+        question_banks_dir = os.path.join(project_root, "question_banks")
+
+        if not os.path.isdir(question_banks_dir):
+            print("Warning: Question banks directory not found")
+            return []
+
+        available_banks = [f for f in os.listdir(question_banks_dir) if f.endswith('.json')]
+        
+        banks_data = []
+        for bank_file in available_banks:
+            name = os.path.splitext(bank_file)[0]
+            formatted_name = ' '.join(word.capitalize() for word in name.replace('_', ' ').split())
+            banks_data.append({"name": formatted_name, "file": bank_file})
+            
+        return banks_data
+    except Exception as e:
+        print(f"Error scanning question banks: {e}")
+        return [] # Return empty list on error
 
 
 if __name__ == "__main__":
