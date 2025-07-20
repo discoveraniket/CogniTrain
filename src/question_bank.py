@@ -71,9 +71,9 @@ def get_available_banks() -> List[Dict[str, str]]:
         return [] # Return empty list on error
 
 
+# This block demonstrates how to use the load_questions function
+# and verifies that the data is loaded correctly.
 if __name__ == "__main__":
-    # This block demonstrates how to use the load_questions function
-    # and verifies that the data is loaded correctly.
     print("Attempting to load questions from 'mcq.json'...")
     try:
         all_questions = load_questions()

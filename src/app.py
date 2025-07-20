@@ -83,7 +83,7 @@ def chat():
 
     # Load the full question bank
     try:
-        mcq_file_path = os.path.join(current_dir, "english.json")
+        mcq_file_path = os.path.join(project_root, "question_banks/english.json")
         all_questions = question_bank.load_questions(file_path=mcq_file_path)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         return jsonify({"error": f"Could not load question bank: {e}"}), 500
