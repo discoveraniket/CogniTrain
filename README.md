@@ -14,12 +14,14 @@ The application's architecture follows a "Pure LLM-Cognition" model, where the F
 
 ## ✨ Features
 
+- **📚 Dynamic Question Bank Selection:** Users can now choose from various pre-defined question banks (e.g., Computer, English, GK Dance) to customize their practice sessions.
 - **🤖 AI-Powered Question Selection:** The app uses an AI model to intelligently select the next question based on the user's historical performance, focusing on areas that need improvement.
 - **🔄 Adaptive Learning:** Implements a spaced repetition strategy to reinforce learning and improve long-term retention.
 - **✅ Instant & Insightful Feedback:** Provides immediate feedback on answers, including detailed explanations for the correct choice.
 - **💬 Conversational Interface:** A user-friendly chat interface allows for natural interaction.
 - **🧠 Real-time Performance Analysis:** The AI analyzes response times and correctness to build a dynamic model of the user's learning curve.
 - **🔧 Developer Insights:** Includes a built-in development panel to display the AI's reasoning, including question selection rationale and student model analysis.
+- **🎨 Refactored UI/UX:** Features a collapsible sidebar for improved navigation and organization, and AI cognitive information is now presented in a cleaner modal window.
 
 ---
 
@@ -88,13 +90,22 @@ CogniTrain/
 │   ├── Incorrect_Answer_with_Hint1.png
 │   ├── Incorrect_Answer_with_Hint2.png
 │   └── Initial_Welcome.png
+├── debug_logs/             # Directory for storing application debug logs
+├── docs/                   # Documentation files and notes
+│   ├── Basic.docx
+│   ├── chat_session.txt
+│   └── prompt_concept.txt
+├── question_banks/         # Contains various JSON files for different question categories
+│   ├── computer.json
+│   ├── english.json
+│   └── gk_dance.json
 ├── src/
+│   ├── __init__.py
 │   ├── app.py                # Main Flask application (data marshaller)
 │   ├── gemini_service.py     # Wrapper for Google Gemini API interaction
 │   ├── prompts.py            # Contains the master prompt for the LLM
-│   ├── question_bank.py      # Loads questions from the JSON file
-│   ├── mcq.json              # Default question bank
-│   └── mcq2.json
+│   ├── question_bank.py      # Loads questions from the JSON files in question_banks/
+│   └── __pycache__/
 ├── static/
 │   ├── AI.jpg
 │   ├── script.js             # Frontend logic for the chat interface

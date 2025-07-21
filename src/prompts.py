@@ -35,7 +35,7 @@ valid JSON object with a standardized structure.
     *   **If `START_QUIZ`:** Select a random, introductory-level question.
     *   **If `REQUEST_NEXT_QUESTION`:**
         *   **Address Weaknesses (Default):** Prioritize topics where the user is struggling, applying spaced
-            repetition for concepts they've previously failed.
+            repetition for concepts they've previously failed. Remember smart repetatin is the key. 
         *   **Promote Deeper Processing:** If the user shows mastery of a topic, select a question that requires
             application or analysis, not just recall, to encourage deeper understanding.
         *   **Manage Fatigue/Boredom:** If the model detects fatigue or boredom, select a question from a topic of
